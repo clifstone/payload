@@ -1637,23 +1637,128 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
-  navItems?:
+  sections?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        fullWidth?: boolean | null;
+        alignment?: ('left' | 'center' | 'right') | null;
+        components?:
+          | (
+              | {
+                  image?: (number | null) | Media;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'logo';
+                }
+              | {
+                  items?:
+                    | {
+                        link: {
+                          type?: ('reference' | 'custom') | null;
+                          newTab?: boolean | null;
+                          reference?:
+                            | ({
+                                relationTo: 'pages';
+                                value: number | Page;
+                              } | null)
+                            | ({
+                                relationTo: 'posts';
+                                value: number | Post;
+                              } | null);
+                          url?: string | null;
+                          label: string;
+                        };
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'navItems';
+                }
+              | {
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'menuButton';
+                }
+              | {
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'accountButton';
+                }
+              | {
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'miniCartButton';
+                }
+              | {
+                  buttonText: string;
+                  buttonStyle?: ('default' | 'light' | 'dark') | null;
+                  items?:
+                    | {
+                        link: {
+                          type?: ('reference' | 'custom') | null;
+                          newTab?: boolean | null;
+                          reference?:
+                            | ({
+                                relationTo: 'pages';
+                                value: number | Page;
+                              } | null)
+                            | ({
+                                relationTo: 'posts';
+                                value: number | Post;
+                              } | null);
+                          url?: string | null;
+                          label: string;
+                        };
+                        childItems?:
+                          | {
+                              link: {
+                                type?: ('reference' | 'custom') | null;
+                                newTab?: boolean | null;
+                                reference?:
+                                  | ({
+                                      relationTo: 'pages';
+                                      value: number | Page;
+                                    } | null)
+                                  | ({
+                                      relationTo: 'posts';
+                                      value: number | Post;
+                                    } | null);
+                                url?: string | null;
+                                label: string;
+                              };
+                              grandchildItems?:
+                                | {
+                                    link: {
+                                      type?: ('reference' | 'custom') | null;
+                                      newTab?: boolean | null;
+                                      reference?:
+                                        | ({
+                                            relationTo: 'pages';
+                                            value: number | Page;
+                                          } | null)
+                                        | ({
+                                            relationTo: 'posts';
+                                            value: number | Post;
+                                          } | null);
+                                      url?: string | null;
+                                      label: string;
+                                    };
+                                    id?: string | null;
+                                  }[]
+                                | null;
+                              id?: string | null;
+                            }[]
+                          | null;
+                        itemsStyle?: ('default' | 'light' | 'dark') | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'dropdown';
+                }
+            )[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1694,17 +1799,110 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
-  navItems?:
+  sections?:
     | T
     | {
-        link?:
+        fullWidth?: T;
+        alignment?: T;
+        components?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
+              logo?:
+                | T
+                | {
+                    image?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              navItems?:
+                | T
+                | {
+                    items?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                              };
+                          id?: T;
+                        };
+                    id?: T;
+                    blockName?: T;
+                  };
+              menuButton?:
+                | T
+                | {
+                    id?: T;
+                    blockName?: T;
+                  };
+              accountButton?:
+                | T
+                | {
+                    id?: T;
+                    blockName?: T;
+                  };
+              miniCartButton?:
+                | T
+                | {
+                    id?: T;
+                    blockName?: T;
+                  };
+              dropdown?:
+                | T
+                | {
+                    buttonText?: T;
+                    buttonStyle?: T;
+                    items?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                              };
+                          childItems?:
+                            | T
+                            | {
+                                link?:
+                                  | T
+                                  | {
+                                      type?: T;
+                                      newTab?: T;
+                                      reference?: T;
+                                      url?: T;
+                                      label?: T;
+                                    };
+                                grandchildItems?:
+                                  | T
+                                  | {
+                                      link?:
+                                        | T
+                                        | {
+                                            type?: T;
+                                            newTab?: T;
+                                            reference?: T;
+                                            url?: T;
+                                            label?: T;
+                                          };
+                                      id?: T;
+                                    };
+                                id?: T;
+                              };
+                          itemsStyle?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                    blockName?: T;
+                  };
             };
         id?: T;
       };

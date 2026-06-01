@@ -1,6 +1,11 @@
 import type { GlobalConfig } from 'payload'
 
-import { link } from '@/fields/link'
+import { LogoBlock } from './blocks/logoBlock/config'
+import { NavItemsBlock } from './blocks/navItemsBlock/config'
+import { MenuButtonBlock } from './blocks/menuButtonBlock/config'
+import { AccountButtonBlock } from './blocks/accountButtonBlock/config'
+import { MiniCartButtonBlock } from './blocks/miniCartButtonBlock/config'
+import { DropdownBlock } from './blocks/dropdownBlock/config'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
@@ -10,20 +15,40 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
-      name: 'navItems',
+      name: 'sections',
       type: 'array',
+      maxRows: 8,
       fields: [
-        link({
-          appearances: false,
-        }),
-      ],
-      maxRows: 6,
-      admin: {
-        initCollapsed: true,
-        components: {
-          RowLabel: '@/Header/RowLabel#RowLabel',
+        {
+          name: 'fullWidth',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Full width',
         },
-      },
+        {
+          name: 'alignment',
+          type: 'radio',
+          defaultValue: 'left',
+          label: 'Alignment',
+          options: [
+            { label: 'Left', value: 'left' },
+            { label: 'Center', value: 'center' },
+            { label: 'Right', value: 'right' },
+          ],
+        },
+        {
+          name: 'components',
+          type: 'blocks',
+          blocks: [
+            LogoBlock,
+            NavItemsBlock,
+            MenuButtonBlock,
+            AccountButtonBlock,
+            MiniCartButtonBlock,
+            DropdownBlock,
+          ],
+        },
+      ],
     },
   ],
   hooks: {
