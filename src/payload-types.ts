@@ -1692,24 +1692,10 @@ export interface Header {
               | {
                   buttonText: string;
                   buttonStyle?: ('default' | 'light' | 'dark') | null;
-                  items?:
+                  menus?:
                     | {
-                        link: {
-                          type?: ('reference' | 'custom') | null;
-                          newTab?: boolean | null;
-                          reference?:
-                            | ({
-                                relationTo: 'pages';
-                                value: number | Page;
-                              } | null)
-                            | ({
-                                relationTo: 'posts';
-                                value: number | Post;
-                              } | null);
-                          url?: string | null;
-                          label: string;
-                        };
-                        childItems?:
+                        title: string;
+                        links?:
                           | {
                               link: {
                                 type?: ('reference' | 'custom') | null;
@@ -1726,7 +1712,7 @@ export interface Header {
                                 url?: string | null;
                                 label: string;
                               };
-                              grandchildItems?:
+                              c0?:
                                 | {
                                     link: {
                                       type?: ('reference' | 'custom') | null;
@@ -1743,19 +1729,179 @@ export interface Header {
                                       url?: string | null;
                                       label: string;
                                     };
+                                    c1?:
+                                      | {
+                                          link: {
+                                            type?: ('reference' | 'custom') | null;
+                                            newTab?: boolean | null;
+                                            reference?:
+                                              | ({
+                                                  relationTo: 'pages';
+                                                  value: number | Page;
+                                                } | null)
+                                              | ({
+                                                  relationTo: 'posts';
+                                                  value: number | Post;
+                                                } | null);
+                                            url?: string | null;
+                                            label: string;
+                                          };
+                                          c2?:
+                                            | {
+                                                link: {
+                                                  type?: ('reference' | 'custom') | null;
+                                                  newTab?: boolean | null;
+                                                  reference?:
+                                                    | ({
+                                                        relationTo: 'pages';
+                                                        value: number | Page;
+                                                      } | null)
+                                                    | ({
+                                                        relationTo: 'posts';
+                                                        value: number | Post;
+                                                      } | null);
+                                                  url?: string | null;
+                                                  label: string;
+                                                };
+                                                id?: string | null;
+                                              }[]
+                                            | null;
+                                          id?: string | null;
+                                        }[]
+                                      | null;
                                     id?: string | null;
                                   }[]
                                 | null;
                               id?: string | null;
                             }[]
                           | null;
-                        itemsStyle?: ('default' | 'light' | 'dark') | null;
                         id?: string | null;
                       }[]
                     | null;
                   id?: string | null;
                   blockName?: string | null;
                   blockType: 'dropdown';
+                }
+              | {
+                  blocksMenu: {
+                    title: string;
+                    buttonStyle?: ('default' | 'light' | 'dark') | null;
+                    items?:
+                      | (
+                          | {
+                              link: {
+                                type?: ('reference' | 'custom') | null;
+                                newTab?: boolean | null;
+                                reference?:
+                                  | ({
+                                      relationTo: 'pages';
+                                      value: number | Page;
+                                    } | null)
+                                  | ({
+                                      relationTo: 'posts';
+                                      value: number | Post;
+                                    } | null);
+                                url?: string | null;
+                                label: string;
+                              };
+                              id?: string | null;
+                              blockName?: string | null;
+                              blockType: 'menuLink';
+                            }
+                          | {
+                              title: string;
+                              items?:
+                                | (
+                                    | {
+                                        link: {
+                                          type?: ('reference' | 'custom') | null;
+                                          newTab?: boolean | null;
+                                          reference?:
+                                            | ({
+                                                relationTo: 'pages';
+                                                value: number | Page;
+                                              } | null)
+                                            | ({
+                                                relationTo: 'posts';
+                                                value: number | Post;
+                                              } | null);
+                                          url?: string | null;
+                                          label: string;
+                                        };
+                                        id?: string | null;
+                                        blockName?: string | null;
+                                        blockType: 'menuLink';
+                                      }
+                                    | {
+                                        title: string;
+                                        items?:
+                                          | (
+                                              | {
+                                                  link: {
+                                                    type?: ('reference' | 'custom') | null;
+                                                    newTab?: boolean | null;
+                                                    reference?:
+                                                      | ({
+                                                          relationTo: 'pages';
+                                                          value: number | Page;
+                                                        } | null)
+                                                      | ({
+                                                          relationTo: 'posts';
+                                                          value: number | Post;
+                                                        } | null);
+                                                    url?: string | null;
+                                                    label: string;
+                                                  };
+                                                  id?: string | null;
+                                                  blockName?: string | null;
+                                                  blockType: 'menuLink';
+                                                }
+                                              | {
+                                                  title: string;
+                                                  items?:
+                                                    | {
+                                                        link: {
+                                                          type?: ('reference' | 'custom') | null;
+                                                          newTab?: boolean | null;
+                                                          reference?:
+                                                            | ({
+                                                                relationTo: 'pages';
+                                                                value: number | Page;
+                                                              } | null)
+                                                            | ({
+                                                                relationTo: 'posts';
+                                                                value: number | Post;
+                                                              } | null);
+                                                          url?: string | null;
+                                                          label: string;
+                                                        };
+                                                        id?: string | null;
+                                                        blockName?: string | null;
+                                                        blockType: 'menuLink';
+                                                      }[]
+                                                    | null;
+                                                  id?: string | null;
+                                                  blockName?: string | null;
+                                                  blockType: 'submenu';
+                                                }
+                                            )[]
+                                          | null;
+                                        id?: string | null;
+                                        blockName?: string | null;
+                                        blockType: 'submenu';
+                                      }
+                                  )[]
+                                | null;
+                              id?: string | null;
+                              blockName?: string | null;
+                              blockType: 'submenu';
+                            }
+                        )[]
+                      | null;
+                  };
+                  id?: string | null;
+                  blockName?: string | null;
+                  blockType: 'blocksMenu';
                 }
             )[]
           | null;
@@ -1857,19 +2003,11 @@ export interface HeaderSelect<T extends boolean = true> {
                 | {
                     buttonText?: T;
                     buttonStyle?: T;
-                    items?:
+                    menus?:
                       | T
                       | {
-                          link?:
-                            | T
-                            | {
-                                type?: T;
-                                newTab?: T;
-                                reference?: T;
-                                url?: T;
-                                label?: T;
-                              };
-                          childItems?:
+                          title?: T;
+                          links?:
                             | T
                             | {
                                 link?:
@@ -1881,7 +2019,67 @@ export interface HeaderSelect<T extends boolean = true> {
                                       url?: T;
                                       label?: T;
                                     };
-                                grandchildItems?:
+                                c0?:
+                                  | T
+                                  | {
+                                      link?:
+                                        | T
+                                        | {
+                                            type?: T;
+                                            newTab?: T;
+                                            reference?: T;
+                                            url?: T;
+                                            label?: T;
+                                          };
+                                      c1?:
+                                        | T
+                                        | {
+                                            link?:
+                                              | T
+                                              | {
+                                                  type?: T;
+                                                  newTab?: T;
+                                                  reference?: T;
+                                                  url?: T;
+                                                  label?: T;
+                                                };
+                                            c2?:
+                                              | T
+                                              | {
+                                                  link?:
+                                                    | T
+                                                    | {
+                                                        type?: T;
+                                                        newTab?: T;
+                                                        reference?: T;
+                                                        url?: T;
+                                                        label?: T;
+                                                      };
+                                                  id?: T;
+                                                };
+                                            id?: T;
+                                          };
+                                      id?: T;
+                                    };
+                                id?: T;
+                              };
+                          id?: T;
+                        };
+                    id?: T;
+                    blockName?: T;
+                  };
+              blocksMenu?:
+                | T
+                | {
+                    blocksMenu?:
+                      | T
+                      | {
+                          title?: T;
+                          buttonStyle?: T;
+                          items?:
+                            | T
+                            | {
+                                menuLink?:
                                   | T
                                   | {
                                       link?:
@@ -1894,11 +2092,87 @@ export interface HeaderSelect<T extends boolean = true> {
                                             label?: T;
                                           };
                                       id?: T;
+                                      blockName?: T;
                                     };
-                                id?: T;
+                                submenu?:
+                                  | T
+                                  | {
+                                      title?: T;
+                                      items?:
+                                        | T
+                                        | {
+                                            menuLink?:
+                                              | T
+                                              | {
+                                                  link?:
+                                                    | T
+                                                    | {
+                                                        type?: T;
+                                                        newTab?: T;
+                                                        reference?: T;
+                                                        url?: T;
+                                                        label?: T;
+                                                      };
+                                                  id?: T;
+                                                  blockName?: T;
+                                                };
+                                            submenu?:
+                                              | T
+                                              | {
+                                                  title?: T;
+                                                  items?:
+                                                    | T
+                                                    | {
+                                                        menuLink?:
+                                                          | T
+                                                          | {
+                                                              link?:
+                                                                | T
+                                                                | {
+                                                                    type?: T;
+                                                                    newTab?: T;
+                                                                    reference?: T;
+                                                                    url?: T;
+                                                                    label?: T;
+                                                                  };
+                                                              id?: T;
+                                                              blockName?: T;
+                                                            };
+                                                        submenu?:
+                                                          | T
+                                                          | {
+                                                              title?: T;
+                                                              items?:
+                                                                | T
+                                                                | {
+                                                                    menuLink?:
+                                                                      | T
+                                                                      | {
+                                                                          link?:
+                                                                            | T
+                                                                            | {
+                                                                                type?: T;
+                                                                                newTab?: T;
+                                                                                reference?: T;
+                                                                                url?: T;
+                                                                                label?: T;
+                                                                              };
+                                                                          id?: T;
+                                                                          blockName?: T;
+                                                                        };
+                                                                  };
+                                                              id?: T;
+                                                              blockName?: T;
+                                                            };
+                                                      };
+                                                  id?: T;
+                                                  blockName?: T;
+                                                };
+                                          };
+                                      id?: T;
+                                      blockName?: T;
+                                    };
                               };
-                          itemsStyle?: T;
-                          id?: T;
                         };
                     id?: T;
                     blockName?: T;

@@ -36,7 +36,7 @@ const LogoBlock = async ({ image }: any) => {
 
   const fullUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}${image.url}`
   const aspect = await getAspectRatio(fullUrl)
-  const imgSize = await getImageSize(fullUrl)
+  //const imgSize = await getImageSize(fullUrl)
 
   return (
     <figure className="flex-grow flex" style={{ aspectRatio: aspect }}>

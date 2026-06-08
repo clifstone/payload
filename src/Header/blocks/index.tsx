@@ -4,6 +4,7 @@ import AccountButtonBlock from './accountButtonBlock'
 import MiniCartButtonBlock from './miniCartButtonBlock'
 import MenuButtonBlock from './menuButtonBlock'
 import DropdownBlock from './dropdownBlock'
+import BlocksMenu from './blockMenu'
 
 export const Blocks = {
   logo: LogoBlock,
@@ -12,4 +13,5 @@ export const Blocks = {
   miniCartButton: MiniCartButtonBlock,
   menuButton: MenuButtonBlock,
   dropdown: DropdownBlock,
+  blocksMenu: BlocksMenu,
 }

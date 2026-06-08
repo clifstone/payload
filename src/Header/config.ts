@@ -6,6 +6,7 @@ import { MenuButtonBlock } from './blocks/menuButtonBlock/config'
 import { AccountButtonBlock } from './blocks/accountButtonBlock/config'
 import { MiniCartButtonBlock } from './blocks/miniCartButtonBlock/config'
 import { DropdownBlock } from './blocks/dropdownBlock/config'
+import { BlocksMenuBlock } from './blocks/blockMenu/config'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
@@ -46,6 +47,7 @@ export const Header: GlobalConfig = {
             AccountButtonBlock,
             MiniCartButtonBlock,
             DropdownBlock,
+            BlocksMenuBlock,
           ],
         },
       ],
