@@ -1809,7 +1809,8 @@ export interface Header {
                               blockType: 'menuLink';
                             }
                           | {
-                              title: string;
+                              label: string;
+                              url: string;
                               items?:
                                 | (
                                     | {
@@ -1833,7 +1834,8 @@ export interface Header {
                                         blockType: 'menuLink';
                                       }
                                     | {
-                                        title: string;
+                                        label: string;
+                                        url: string;
                                         items?:
                                           | (
                                               | {
@@ -1857,7 +1859,8 @@ export interface Header {
                                                   blockType: 'menuLink';
                                                 }
                                               | {
-                                                  title: string;
+                                                  label: string;
+                                                  url: string;
                                                   items?:
                                                     | {
                                                         link: {
@@ -2097,7 +2100,8 @@ export interface HeaderSelect<T extends boolean = true> {
                                 submenu?:
                                   | T
                                   | {
-                                      title?: T;
+                                      label?: T;
+                                      url?: T;
                                       items?:
                                         | T
                                         | {
@@ -2119,7 +2123,8 @@ export interface HeaderSelect<T extends boolean = true> {
                                             submenu?:
                                               | T
                                               | {
-                                                  title?: T;
+                                                  label?: T;
+                                                  url?: T;
                                                   items?:
                                                     | T
                                                     | {
@@ -2141,7 +2146,8 @@ export interface HeaderSelect<T extends boolean = true> {
                                                         submenu?:
                                                           | T
                                                           | {
-                                                              title?: T;
+                                                              label?: T;
+                                                              url?: T;
                                                               items?:
                                                                 | T
                                                                 | {

@@ -18,11 +18,12 @@ export default function MenuItem({
   onFocus,
 }: MenuItemProps) {
   const label =
-    item.blockType === 'submenu' ? item.title || 'Submenu' : item.link?.label || 'Menu Item'
+    item.blockType === 'submenu' ? item.label || 'Submenu' : item.link?.label || 'Menu Item'
 
   const className = clsx(
-    'flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-100',
-    active && 'bg-gray-100 font-medium',
+    'flex w-full items-center justify-between text-left text-sm p-4',
+    'hover:bg-neutral-100',
+    active && 'bg-neutral-100',
   )
 
   if (item.blockType === 'menuLink') {

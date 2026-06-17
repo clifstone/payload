@@ -16,9 +16,15 @@ export const submenuBlocks = (depth = 0, maxDepth = MAX_SUBMENU_DEPTH): Block[] 
           },
           fields: [
             {
-              name: 'title',
+              name: 'label',
               type: 'text',
-              label: 'Submenu title',
+              label: 'Submenu Label',
+              required: true,
+            },
+            {
+              name: 'url',
+              type: 'text',
+              label: 'Submenu URL',
               required: true,
             },
             {

@@ -1,7 +1,8 @@
 export type MenuBlockItem = {
   id: string
   blockType: 'menuLink' | 'submenu'
-  title?: string
+  label?: string
+  url?: string
   link?: {
     type?: string
     newTab?: boolean | null
