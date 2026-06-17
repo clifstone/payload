@@ -6,7 +6,6 @@ import Button from '@/ui/buttons/simple'
 import MenuItem from './blocks/menuItem'
 import type { MenuBlockItem } from './types'
 import clsx from 'clsx'
-import { Span } from 'next/dist/trace'
 
 /**
  * TODO:
