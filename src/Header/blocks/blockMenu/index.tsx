@@ -6,6 +6,7 @@ import Button from '@/ui/buttons/simple'
 import MenuItem from './blocks/menuItem'
 import type { MenuBlockItem } from './types'
 import clsx from 'clsx'
+import { Span } from 'next/dist/trace'
 
 /**
  * TODO:
@@ -86,7 +87,7 @@ const BlocksMenu = ({ blocksMenu }: BlocksMenuProps) => {
       </Button>
 
       {menuOpen && (
-        <div
+        <nav
           className={clsx(
             'absolute left-0 top-full mt-2 flex overflow-hidden rounded-b-md border bg-white',
           )}
@@ -94,13 +95,27 @@ const BlocksMenu = ({ blocksMenu }: BlocksMenuProps) => {
           {panels.map((items, depth) => {
             const panelHeader = getPanelHeader(rootItems, activePath, depth)
             return (
-              <div
+              <section
                 key={depth}
-                className="w-80 max-h-[calc(100dvh-180px)] shrink-0 overflow-y-auto border-r last:border-r-0"
+                className="w-[23rem] max-h-[calc(100dvh-16rem)] shrink-0 overflow-y-auto border-r last:border-r-0"
               >
-                <div className="border-b px-4 py-3 font-semibold">
-                  {depth === 0 ? title : <Link href={panelHeader.url}>{panelHeader.label}</Link>}
-                </div>
+                <header className="flex items-center justify-between gap-2 border-b p-4">
+                  {depth === 0 ? (
+                    title
+                  ) : (
+                    <>
+                      <span className="text-lg font-bold">{panelHeader.label}</span>
+                      <Link
+                        className={clsx(
+                          'text-sm font-bold leading-none block bg-primary text-white rounded-full py-3 px-4',
+                        )}
+                        href={panelHeader.url}
+                      >
+                        View All
+                      </Link>
+                    </>
+                  )}
+                </header>
 
                 <div className="flex flex-col">
                   {items.map((item) => {
@@ -121,34 +136,13 @@ const BlocksMenu = ({ blocksMenu }: BlocksMenuProps) => {
                     )
                   })}
                 </div>
-              </div>
+              </section>
             )
           })}
-        </div>
+        </nav>
       )}
     </div>
   )
 }
 
 export default BlocksMenu
-
-// {
-// "id": "6a31ffb101e516da15b25bb7",
-// "label": "Category 4",
-// "url": "/",
-// "blockName": null,
-// "blockType": "submenu",
-// "items": [
-//     {
-//     "id": "6a31ffc501e516da15b25bbb",
-//     "blockName": null,
-//     "blockType": "menuLink",
-//     "link": {
-//       "type": "custom",
-//       "newTab": null,
-//       "url": "/",
-//       "label": "Category 4 subcategory"
-//       }
-//     }
-//   ]
-// }

@@ -11,43 +11,6 @@ const breakpoints = {
   '3xlarge': '1920px',
 }
 
-const colorNames = ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary']
-
-const lightnessScale = {
-  50: '95%',
-  100: '90%',
-  200: '80%',
-  300: '70%',
-  400: '60%',
-  500: '50%',
-  600: '40%',
-  700: '30%',
-  800: '20%',
-  900: '10%',
-  950: '5%',
-}
-
-const colorValue = (value) => {
-  return ({ opacityValue }) =>
-    opacityValue === undefined ? value : value.replace('/ 1)', `/ ${opacityValue})`)
-}
-
-const makeColorScale = (name) => ({
-  DEFAULT: ({ opacityValue }) =>
-    opacityValue === undefined
-      ? `var(--${name})`
-      : `hsl(from var(--${name}) h s l / ${opacityValue})`,
-
-  ...Object.fromEntries(
-    Object.entries(lightnessScale).map(([step, lightness]) => [
-      step,
-      colorValue(`hsl(from var(--${name}) h s ${lightness} / 1)`),
-    ]),
-  ),
-})
-
-const colors = Object.fromEntries(colorNames.map((name) => [name, makeColorScale(name)]))
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -63,7 +26,6 @@ export default {
         default: '1366px',
         ...breakpoints,
       },
-      colors,
     },
   },
   plugins: [containerQueries],

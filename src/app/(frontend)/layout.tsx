@@ -30,7 +30,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body className={`${baseFont.className} antialiased text-neutral-800  text-pretty`}>
+      <body
+        className={`${baseFont.className} antialiased text-neutral-700  text-pretty border-neutral-200`}
+      >
         <div className="flex flex-col min-h-[100dvh]">
           <Providers>
             <AdminBar

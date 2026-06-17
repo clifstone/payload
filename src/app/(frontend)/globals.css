@@ -3,6 +3,82 @@
 
 @config '../../../tailwind.config.mjs';
 
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-50: hsl(from var(--primary) h s 95%);
+  --color-primary-100: hsl(from var(--primary) h s 90%);
+  --color-primary-200: hsl(from var(--primary) h s 80%);
+  --color-primary-300: hsl(from var(--primary) h s 70%);
+  --color-primary-400: hsl(from var(--primary) h s 60%);
+  --color-primary-500: hsl(from var(--primary) h s 50%);
+  --color-primary-600: hsl(from var(--primary) h s 40%);
+  --color-primary-700: hsl(from var(--primary) h s 30%);
+  --color-primary-800: hsl(from var(--primary) h s 20%);
+  --color-primary-900: hsl(from var(--primary) h s 10%);
+  --color-primary-950: hsl(from var(--primary) h s 5%);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-50: hsl(from var(--secondary) h s 95%);
+  --color-secondary-100: hsl(from var(--secondary) h s 90%);
+  --color-secondary-200: hsl(from var(--secondary) h s 80%);
+  --color-secondary-300: hsl(from var(--secondary) h s 70%);
+  --color-secondary-400: hsl(from var(--secondary) h s 60%);
+  --color-secondary-500: hsl(from var(--secondary) h s 50%);
+  --color-secondary-600: hsl(from var(--secondary) h s 40%);
+  --color-secondary-700: hsl(from var(--secondary) h s 30%);
+  --color-secondary-800: hsl(from var(--secondary) h s 20%);
+  --color-secondary-900: hsl(from var(--secondary) h s 10%);
+  --color-secondary-950: hsl(from var(--secondary) h s 5%);
+
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-50: hsl(from var(--tertiary) h s 95%);
+  --color-tertiary-100: hsl(from var(--tertiary) h s 90%);
+  --color-tertiary-200: hsl(from var(--tertiary) h s 80%);
+  --color-tertiary-300: hsl(from var(--tertiary) h s 70%);
+  --color-tertiary-400: hsl(from var(--tertiary) h s 60%);
+  --color-tertiary-500: hsl(from var(--tertiary) h s 50%);
+  --color-tertiary-600: hsl(from var(--tertiary) h s 40%);
+  --color-tertiary-700: hsl(from var(--tertiary) h s 30%);
+  --color-tertiary-800: hsl(from var(--tertiary) h s 20%);
+  --color-tertiary-900: hsl(from var(--tertiary) h s 10%);
+  --color-tertiary-950: hsl(from var(--tertiary) h s 5%);
+
+  --color-quaternary: var(--quaternary);
+  --color-quaternary-50: hsl(from var(--quaternary) h s 95%);
+  --color-quaternary-100: hsl(from var(--quaternary) h s 90%);
+  --color-quaternary-200: hsl(from var(--quaternary) h s 80%);
+  --color-quaternary-300: hsl(from var(--quaternary) h s 70%);
+  --color-quaternary-400: hsl(from var(--quaternary) h s 60%);
+  --color-quaternary-500: hsl(from var(--quaternary) h s 50%);
+  --color-quaternary-600: hsl(from var(--quaternary) h s 40%);
+  --color-quaternary-700: hsl(from var(--quaternary) h s 30%);
+  --color-quaternary-800: hsl(from var(--quaternary) h s 20%);
+  --color-quaternary-900: hsl(from var(--quaternary) h s 10%);
+  --color-quaternary-950: hsl(from var(--quaternary) h s 5%);
+
+  --color-quinary: var(--quinary);
+  --color-quinary-50: hsl(from var(--quinary) h s 95%);
+  --color-quinary-100: hsl(from var(--quinary) h s 90%);
+  --color-quinary-200: hsl(from var(--quinary) h s 80%);
+  --color-quinary-300: hsl(from var(--quinary) h s 70%);
+  --color-quinary-400: hsl(from var(--quinary) h s 60%);
+  --color-quinary-500: hsl(from var(--quinary) h s 50%);
+  --color-quinary-600: hsl(from var(--quinary) h s 40%);
+  --color-quinary-700: hsl(from var(--quinary) h s 30%);
+  --color-quinary-800: hsl(from var(--quinary) h s 20%);
+  --color-quinary-900: hsl(from var(--quinary) h s 10%);
+  --color-quinary-950: hsl(from var(--quinary) h s 5%);
+
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-quaternary: var(--quaternary);
+  --color-quinary: var(--quinary);
+}
+
+@theme {
+  --color-border: oklch(0.92 0 0);
+}
+
 :root {
   --primary: #ff0081;
   --secondary: #ffaed7;
@@ -10,6 +86,14 @@
   --quaternary: #C81D25;
   --quinary: #BFD7EA;
   --article-order: 0;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
+  }
 }
 
 input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, textarea:-webkit-autofill:hover, textarea:-webkit-autofill:focus, select:-webkit-autofill, select:-webkit-autofill:hover, select:-webkit-autofill:focus {
