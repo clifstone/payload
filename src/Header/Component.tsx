@@ -8,7 +8,7 @@ const Header = async () => {
   const { sections = [] } = headerData || {}
 
   return (
-    <header className="flex flex-row items-center justify-between w-full h-[53px] border-b bg-white/30 backdrop-blur-lg sticky top-0 py-2 px-4 isolate z-[123456789]">
+    <header className="flex flex-row items-center justify-between w-full h-[53px] border-b bg-white/30 backdrop-blur-lg sticky top-0 py-2 px-4 isolate z-[1]">
       <div className="flex items-center justify-between gap-8 w-full h-full">
         {sections?.map((section) => {
           const { fullWidth = false, alignment = 'left', components = [] } = section

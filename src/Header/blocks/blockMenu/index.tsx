@@ -9,8 +9,6 @@ import clsx from 'clsx'
 
 /**
  * TODO:
- * cleanup old stuff.
- * change title of submenu to label and add a link field to the submenu block config.
  * menu is opened on click, so it also must be closed on click. needs a timeout if not interacted with.
  * make the panels responsive within the window.
  * make a backround -- full screen -- will need boundingClientRect thing.
@@ -96,25 +94,23 @@ const BlocksMenu = ({ blocksMenu }: BlocksMenuProps) => {
             return (
               <section
                 key={depth}
-                className="w-[23rem] max-h-[calc(100dvh-16rem)] shrink-0 overflow-y-auto border-r last:border-r-0"
+                className="w-[23rem] max-h-[calc(100dvh-16rem)] shrink-0 overflow-y-auto scrollbar-clean border-r last:border-r-0"
               >
-                <header className="flex items-center justify-between gap-2 border-b p-4">
-                  {depth === 0 ? (
-                    title
-                  ) : (
-                    <>
-                      <span className="text-lg font-bold">{panelHeader.label}</span>
+                {depth !== 0 && (
+                  <header className="flex items-center justify-between gap-2 border-b p-4">
+                    <span className="text-lg font-bold">{panelHeader.label}</span>
+                    {panelHeader.url && (
                       <Link
                         className={clsx(
-                          'text-sm font-bold leading-none block bg-primary text-white rounded-full py-3 px-4',
+                          'text-xs font-bold leading-none uppercase flex items-center justify-center gap-2 bg-primary text-white rounded-full py-3 px-4',
                         )}
                         href={panelHeader.url}
                       >
-                        View All
+                        <span className="">View All</span>
                       </Link>
-                    </>
-                  )}
-                </header>
+                    )}
+                  </header>
+                )}
 
                 <div className="flex flex-col">
                   {items.map((item) => {

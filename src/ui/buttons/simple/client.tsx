@@ -1,19 +1,27 @@
 'use client'
 // import { useModal } from '@lib/context/modals';
-// import { useDrawer } from '@lib/context/drawers';
+import { useDrawer } from '@/ui/context/drawers'
+
+interface ClientProps {
+  drawer?: string
+  modal?: string
+  modalData?: any
+  navigateTo?: string
+  transition?: string
+}
 
 const Client = ({
-  // drawer,
+  drawer,
   // modal,
   // modalData,
   // navigateTo,
   ...props
-}) => {
+}: ClientProps) => {
   // const { toggleModal, setModalData } = useModal();
-  // const { toggleDrawer } = useDrawer();
+  const { toggleDrawer } = useDrawer()
 
   const handleClick = (e: any) => {
-    // if (drawer) toggleDrawer(drawer);
+    if (drawer) toggleDrawer(drawer)
     // if (modal) toggleModal(modal);
     // if (modalData) setModalData(modalData);
   }
