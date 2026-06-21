@@ -1,12 +1,10 @@
 import type { GlobalConfig } from 'payload'
 
 import { LogoBlock } from './blocks/logoBlock/config'
-import { NavItemsBlock } from './blocks/navItemsBlock/config'
 import { MenuButtonBlock } from './blocks/menuButtonBlock/config'
 import { AccountButtonBlock } from './blocks/accountButtonBlock/config'
 import { MiniCartButtonBlock } from './blocks/miniCartButtonBlock/config'
-import { DropdownBlock } from './blocks/dropdownBlock/config'
-import { BlocksMenuBlock } from './blocks/blockMenu/config'
+import { MenuReferenceBlock } from './blocks/menuReferenceBlock/config'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
@@ -42,12 +40,10 @@ export const Header: GlobalConfig = {
           type: 'blocks',
           blocks: [
             LogoBlock,
-            NavItemsBlock,
             MenuButtonBlock,
             AccountButtonBlock,
             MiniCartButtonBlock,
-            DropdownBlock,
-            BlocksMenuBlock,
+            MenuReferenceBlock,
           ],
         },
       ],

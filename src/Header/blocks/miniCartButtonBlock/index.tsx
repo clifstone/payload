@@ -8,7 +8,7 @@ const MiniCartButtonBlock = () => {
         size="small"
         variant="basic"
         startIcon={<ShoppingCartOutlinedIcon />}
-        //drawer={'loginRegister'}
+        drawer={'miniCart'}
       />
     </div>
   )

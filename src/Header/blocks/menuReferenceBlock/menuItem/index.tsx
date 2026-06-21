@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import Link from 'next/link'
-import type { MenuBlockItem } from '../../types'
+import type { MenuBlockItem } from '../types'
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined'
 
 type MenuItemProps = {

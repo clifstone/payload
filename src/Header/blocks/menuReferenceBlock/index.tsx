@@ -1,23 +1,23 @@
 'use client'
 
+import type { Menu } from '@/payload-types'
+import type { MenuBlockItem } from './types'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import gsap from 'gsap'
 import Button from '@/ui/buttons/simple'
-import MenuItem from './blocks/menuItem'
-import type { MenuBlockItem } from './types'
+import MenuItem from './menuItem'
 import clsx from 'clsx'
 import { useScreens } from '@/hooks/screens'
 import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined'
 
-type BlocksMenuProps = {
-  blocksMenu?: {
-    title?: string
-    items?: MenuBlockItem[]
-  }
+type MenuProps = {
+  menu?: number | Menu | null
+  buttonStyle?: 'dark' | 'light' | 'default' | null
+  isOpen?: boolean
 }
 
-const PANEL_WIDTH = '24rem'
+const PANEL_WIDTH = '28rem'
 
 const getPanelHeader = (rootItems: MenuBlockItem[], activePath: string[], depth: number) => {
   let items = rootItems
@@ -42,10 +42,11 @@ const getPanelHeader = (rootItems: MenuBlockItem[], activePath: string[], depth:
   return header
 }
 
-const BlocksMenu = ({ blocksMenu }: BlocksMenuProps) => {
-  console.log('fart!')
-  const title = blocksMenu?.title || 'Blocks Menu'
-  const rootItems = blocksMenu?.items || []
+const BlocksMenu = ({ menu, isOpen = false }: MenuProps) => {
+  if (!menu || typeof menu === 'number') return null
+
+  const title = menu.title || 'Blocks Menu'
+  const rootItems = (menu.items || []) as MenuBlockItem[]
 
   const [menuOpen, setMenuOpen] = useState(false)
   const [activePath, setActivePath] = useState<string[]>([])
@@ -124,15 +125,34 @@ const BlocksMenu = ({ blocksMenu }: BlocksMenuProps) => {
                 return (
                   <section
                     key={depth}
-                    className="max-h-[calc(100dvh-16rem)] shrink-0 overflow-y-auto scrollbar-clean"
+                    className={clsx(
+                      'max-h-[calc(100dvh-16rem)] shrink-0 overflow-y-auto scrollbar-clean',
+                      PANEL_WIDTH,
+                    )}
                     style={{ width: PANEL_WIDTH }}
                   >
                     {depth !== 0 && (
                       <header className="flex items-center border-b">
+                        <div className="flex items-center justify-between w-full px-4">
+                          <span className="text-lg font-bold">{panelHeader.label}</span>
+
+                          {panelHeader.url && (
+                            <Link
+                              className={clsx(
+                                'text-xs font-semibold uppercase border py-2 px-3 rounded-md group',
+                                'transition-all duration-200',
+                                'large:hover:bg-primary',
+                              )}
+                              href={panelHeader.url}
+                            >
+                              <span className={clsx('large:group-hover:text-white')}>View All</span>
+                            </Link>
+                          )}
+                        </div>
                         <button
                           type="button"
                           className={clsx(
-                            'flex border-r p-4 cursor-pointer',
+                            'flex border-l p-4 cursor-pointer',
                             'large:hover:bg-neutral-100',
                           )}
                           onClick={handleBack}
@@ -141,20 +161,6 @@ const BlocksMenu = ({ blocksMenu }: BlocksMenuProps) => {
                             <KeyboardBackspaceOutlinedIcon />
                           </i>
                         </button>
-
-                        <div className="flex items-center justify-between w-full px-4">
-                          <span className="text-lg font-bold">{panelHeader.label}</span>
-                          {panelHeader.url && (
-                            <Link
-                              className={clsx(
-                                'underline underline-offset-3 decoration-2 decoration-primary',
-                              )}
-                              href={panelHeader.url}
-                            >
-                              <span>View All</span>
-                            </Link>
-                          )}
-                        </div>
                       </header>
                     )}
 

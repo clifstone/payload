@@ -8,7 +8,7 @@ const AccountButtonBlock = () => {
         size="small"
         variant="basic"
         startIcon={<AccountCircleTwoToneIcon />}
-        //drawer={'loginRegister'}
+        drawer={'account'}
       />
     </div>
   )
