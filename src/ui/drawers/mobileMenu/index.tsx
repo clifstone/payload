@@ -1,6 +1,6 @@
 'use client'
-import { useDrawer } from '../../context/drawers'
-import Wrapper from '../wrapper'
+import { useDrawer } from '@/ui/context/drawers'
+import Wrapper from '@/ui/drawers/wrapper'
 
 const MobileMenu = () => {
   const { drawers } = useDrawer()

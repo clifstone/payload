@@ -10,6 +10,7 @@ import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Menus } from '@/collections/Menus/config'
+import { Drawers } from '@/collections/Drawers/config'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -63,7 +64,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Menus],
+  collections: [Pages, Posts, Media, Categories, Users, Menus, Drawers],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,

@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     users: User;
     menus: Menu;
+    drawers: Drawer;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -96,6 +97,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     menus: MenusSelect<false> | MenusSelect<true>;
+    drawers: DrawersSelect<false> | DrawersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -923,6 +925,37 @@ export interface Menu {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "drawers".
+ */
+export interface Drawer {
+  id: number;
+  title: string;
+  /**
+   * Example: main-menu, cart, account
+   */
+  slug: string;
+  items?:
+    | (
+        | {
+            menu: number | Menu;
+            buttonStyle?: ('default' | 'light' | 'dark') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'menuReference';
+          }
+        | {
+            image?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'logo';
+          }
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1134,6 +1167,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'menus';
         value: number | Menu;
+      } | null)
+    | ({
+        relationTo: 'drawers';
+        value: number | Drawer;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1603,6 +1640,35 @@ export interface MenusSelect<T extends boolean = true> {
                           blockName?: T;
                         };
                   };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "drawers_select".
+ */
+export interface DrawersSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  items?:
+    | T
+    | {
+        menuReference?:
+          | T
+          | {
+              menu?: T;
+              buttonStyle?: T;
+              id?: T;
+              blockName?: T;
+            };
+        logo?:
+          | T
+          | {
+              image?: T;
               id?: T;
               blockName?: T;
             };

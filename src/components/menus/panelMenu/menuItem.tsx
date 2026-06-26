@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import Link from 'next/link'
-import type { MenuBlockItem } from '../../types'
+import type { MenuBlockItem } from './types'
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined'
 
 type MenuItemProps = {
@@ -12,13 +12,7 @@ type MenuItemProps = {
   onClick?: () => void
 }
 
-export default function MenuItem({
-  item,
-  active,
-  hasChildren,
-  onMouseEnter,
-  onFocus,
-}: MenuItemProps) {
+const MenuItem = ({ item, active, hasChildren, onMouseEnter, onFocus }: MenuItemProps) => {
   const label =
     item.blockType === 'submenu' ? item.label || 'Submenu' : item.link?.label || 'Menu Item'
 
@@ -54,3 +48,5 @@ export default function MenuItem({
     </button>
   )
 }
+
+export default MenuItem
