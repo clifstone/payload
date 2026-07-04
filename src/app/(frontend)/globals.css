@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@config '../../../tailwind.config.mjs';
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-50: hsl(from var(--primary) h s 95%);
+  --color-primary-100: hsl(from var(--primary) h s 90%);
+  --color-primary-200: hsl(from var(--primary) h s 80%);
+  --color-primary-300: hsl(from var(--primary) h s 70%);
+  --color-primary-400: hsl(from var(--primary) h s 60%);
+  --color-primary-500: hsl(from var(--primary) h s 50%);
+  --color-primary-600: hsl(from var(--primary) h s 40%);
+  --color-primary-700: hsl(from var(--primary) h s 30%);
+  --color-primary-800: hsl(from var(--primary) h s 20%);
+  --color-primary-900: hsl(from var(--primary) h s 10%);
+  --color-primary-950: hsl(from var(--primary) h s 5%);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-50: hsl(from var(--secondary) h s 95%);
+  --color-secondary-100: hsl(from var(--secondary) h s 90%);
+  --color-secondary-200: hsl(from var(--secondary) h s 80%);
+  --color-secondary-300: hsl(from var(--secondary) h s 70%);
+  --color-secondary-400: hsl(from var(--secondary) h s 60%);
+  --color-secondary-500: hsl(from var(--secondary) h s 50%);
+  --color-secondary-600: hsl(from var(--secondary) h s 40%);
+  --color-secondary-700: hsl(from var(--secondary) h s 30%);
+  --color-secondary-800: hsl(from var(--secondary) h s 20%);
+  --color-secondary-900: hsl(from var(--secondary) h s 10%);
+  --color-secondary-950: hsl(from var(--secondary) h s 5%);
+
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-50: hsl(from var(--tertiary) h s 95%);
+  --color-tertiary-100: hsl(from var(--tertiary) h s 90%);
+  --color-tertiary-200: hsl(from var(--tertiary) h s 80%);
+  --color-tertiary-300: hsl(from var(--tertiary) h s 70%);
+  --color-tertiary-400: hsl(from var(--tertiary) h s 60%);
+  --color-tertiary-500: hsl(from var(--tertiary) h s 50%);
+  --color-tertiary-600: hsl(from var(--tertiary) h s 40%);
+  --color-tertiary-700: hsl(from var(--tertiary) h s 30%);
+  --color-tertiary-800: hsl(from var(--tertiary) h s 20%);
+  --color-tertiary-900: hsl(from var(--tertiary) h s 10%);
+  --color-tertiary-950: hsl(from var(--tertiary) h s 5%);
+
+  --color-quaternary: var(--quaternary);
+  --color-quaternary-50: hsl(from var(--quaternary) h s 95%);
+  --color-quaternary-100: hsl(from var(--quaternary) h s 90%);
+  --color-quaternary-200: hsl(from var(--quaternary) h s 80%);
+  --color-quaternary-300: hsl(from var(--quaternary) h s 70%);
+  --color-quaternary-400: hsl(from var(--quaternary) h s 60%);
+  --color-quaternary-500: hsl(from var(--quaternary) h s 50%);
+  --color-quaternary-600: hsl(from var(--quaternary) h s 40%);
+  --color-quaternary-700: hsl(from var(--quaternary) h s 30%);
+  --color-quaternary-800: hsl(from var(--quaternary) h s 20%);
+  --color-quaternary-900: hsl(from var(--quaternary) h s 10%);
+  --color-quaternary-950: hsl(from var(--quaternary) h s 5%);
+
+  --color-quinary: var(--quinary);
+  --color-quinary-50: hsl(from var(--quinary) h s 95%);
+  --color-quinary-100: hsl(from var(--quinary) h s 90%);
+  --color-quinary-200: hsl(from var(--quinary) h s 80%);
+  --color-quinary-300: hsl(from var(--quinary) h s 70%);
+  --color-quinary-400: hsl(from var(--quinary) h s 60%);
+  --color-quinary-500: hsl(from var(--quinary) h s 50%);
+  --color-quinary-600: hsl(from var(--quinary) h s 40%);
+  --color-quinary-700: hsl(from var(--quinary) h s 30%);
+  --color-quinary-800: hsl(from var(--quinary) h s 20%);
+  --color-quinary-900: hsl(from var(--quinary) h s 10%);
+  --color-quinary-950: hsl(from var(--quinary) h s 5%);
+
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-quaternary: var(--quaternary);
+  --color-quinary: var(--quinary);
+}
+
+@theme {
+  --color-border: oklch(0.92 0 0);
+}
+
+:root {
+  --primary: #ff0081;
+  --secondary: #ffaed7;
+  --tertiary: #ffcae5;
+  --quaternary: #C81D25;
+  --quinary: #BFD7EA;
+  --article-order: 0;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
+  }
+}
+
+@layer utilities {
+  .scrollbar-clean {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-clean::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-clean::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .scrollbar-clean::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 9999px;
+  }
+
+  .scrollbar-clean::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, textarea:-webkit-autofill:hover, textarea:-webkit-autofill:focus, select:-webkit-autofill, select:-webkit-autofill:hover, select:-webkit-autofill:focus {
+  background-color: inherit !important;
+  background: inherit !important;
+}
+
+@keyframes autofill-start {}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition: background-color 9999s ease-in-out 0s;
+  transition: background-color 9999s ease-in-out 0s;
+  -webkit-text-fill-color: inherit !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  caret-color: inherit;
+  animation-name: autofill-start;
+  animation-duration: 0.1s;
+}
+
+i > svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+i.justthisone {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  position: relative;
+}
+i.justthisone > svg {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background-color: black;
+  border-radius: 9999px;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
