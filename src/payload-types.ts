@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    customers: Customer;
     menus: Menu;
     drawers: Drawer;
     redirects: Redirect;
@@ -96,6 +97,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    customers: CustomersSelect<false> | CustomersSelect<true>;
     menus: MenusSelect<false> | MenusSelect<true>;
     drawers: DrawersSelect<false> | DrawersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -424,6 +426,7 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  roles?: ('admin' | 'customer')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -782,6 +785,49 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers".
+ */
+export interface Customer {
+  id: number;
+  user: number | User;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  smsOptIn?: boolean | null;
+  marketingEmailOptIn?: boolean | null;
+  addresses?:
+    | {
+        label?: string | null;
+        firstName: string;
+        lastName: string;
+        line1: string;
+        line2?: string | null;
+        city: string;
+        stateProvince: string;
+        postalCode: string;
+        country: string;
+        phone?: string | null;
+        isDefaultShipping?: boolean | null;
+        isDefaultBilling?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional saved address row ID. Phase 1 can rely on address default flags.
+   */
+  defaultShippingAddress?: string | null;
+  /**
+   * Optional saved address row ID. Phase 1 can rely on address default flags.
+   */
+  defaultBillingAddress?: string | null;
+  accountStatus: 'active' | 'disabled';
+  internalAdminNotes?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1165,6 +1211,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'customers';
+        value: number | Customer;
+      } | null)
+    | ({
         relationTo: 'menus';
         value: number | Menu;
       } | null)
@@ -1520,6 +1570,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1536,6 +1587,42 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers_select".
+ */
+export interface CustomersSelect<T extends boolean = true> {
+  user?: T;
+  firstName?: T;
+  lastName?: T;
+  email?: T;
+  phone?: T;
+  smsOptIn?: T;
+  marketingEmailOptIn?: T;
+  addresses?:
+    | T
+    | {
+        label?: T;
+        firstName?: T;
+        lastName?: T;
+        line1?: T;
+        line2?: T;
+        city?: T;
+        stateProvince?: T;
+        postalCode?: T;
+        country?: T;
+        phone?: T;
+        isDefaultShipping?: T;
+        isDefaultBilling?: T;
+        id?: T;
+      };
+  defaultShippingAddress?: T;
+  defaultBillingAddress?: T;
+  accountStatus?: T;
+  internalAdminNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
