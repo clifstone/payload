@@ -1,6 +1,8 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
+import { sendCustomerVerificationEmail } from '@/utilities/customerEmailVerification'
+
 type RegistrationBody = {
   email?: unknown
   firstName?: unknown
@@ -67,19 +69,31 @@ export async function POST(request: Request): Promise<Response> {
       roles: ['customer'],
     } as Record<string, unknown>,
     depth: 0,
+    overrideAccess: true,
   })
+
+  const customerData = {
+    accountStatus: 'active' as const,
+    email,
+    firstName,
+    lastName,
+    user: user.id,
+  }
 
   try {
     const customer = await (payload.create as any)({
       collection: 'customers',
-      data: {
-        user: user.id,
-        firstName,
-        lastName,
-        email,
-        accountStatus: 'active',
+      context: {
+        allowCustomerProfileUpdate: true,
       },
+      data: customerData,
       depth: 0,
+      overrideAccess: true,
+    })
+
+    await sendCustomerVerificationEmail({
+      customer,
+      payload,
     })
 
     return Response.json(
@@ -101,9 +115,16 @@ export async function POST(request: Request): Promise<Response> {
     await payload.delete({
       collection: 'users',
       id: user.id,
+      overrideAccess: true,
     })
 
-    payload.logger.error({ err: error }, 'Failed to create customer profile during registration')
+    payload.logger.error(
+      {
+        attemptedCustomer: customerData,
+        err: error,
+      },
+      'Failed to create customer profile during registration',
+    )
     return Response.json({ error: 'Unable to create customer account.' }, { status: 500 })
   }
 }

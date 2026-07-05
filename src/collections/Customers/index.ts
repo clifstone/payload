@@ -8,7 +8,52 @@ import {
 } from '@/access/customerAccess'
 import { hasAdminRole } from '@/access/isAdmin'
 
-const normalizeCustomer: CollectionBeforeChangeHook = ({ data, originalDoc, req }) => {
+type CustomerAddress = {
+  id?: string | null
+  isDefaultBilling?: boolean | null
+  isDefaultShipping?: boolean | null
+}
+
+const normalizeDefaultAddress = (
+  addresses: CustomerAddress[] | null | undefined,
+  field: 'isDefaultBilling' | 'isDefaultShipping',
+): string | undefined => {
+  if (!addresses?.length) return undefined
+
+  let defaultAddressID: string | undefined
+  let hasDefault = false
+
+  for (const address of addresses) {
+    if (address[field] && !hasDefault) {
+      hasDefault = true
+      defaultAddressID = address.id || undefined
+      address[field] = true
+    } else {
+      address[field] = false
+    }
+  }
+
+  if (!hasDefault) {
+    addresses[0][field] = true
+    defaultAddressID = addresses[0].id || undefined
+  }
+
+  return defaultAddressID
+}
+
+const getMissingProfileFields = (data: Record<string, unknown>): string[] => {
+  const addresses = Array.isArray(data.addresses) ? (data.addresses as CustomerAddress[]) : []
+  const hasDefaultShipping = addresses.some((address) => address.isDefaultShipping)
+  const hasDefaultBilling = addresses.some((address) => address.isDefaultBilling)
+
+  return [
+    !data.phone ? 'phone' : undefined,
+    !hasDefaultShipping ? 'shippingAddress' : undefined,
+    !hasDefaultBilling ? 'billingAddress' : undefined,
+  ].filter(Boolean) as string[]
+}
+
+const normalizeCustomer: CollectionBeforeChangeHook = ({ context, data, originalDoc, req }) => {
   const { user } = req
 
   if (typeof data.email === 'string') {
@@ -23,15 +68,37 @@ const normalizeCustomer: CollectionBeforeChangeHook = ({ data, originalDoc, req 
     data.lastName = data.lastName.trim()
   }
 
+  const addresses = Array.isArray(data.addresses) ? (data.addresses as CustomerAddress[]) : null
+
+  if (addresses) {
+    data.defaultShippingAddress =
+      normalizeDefaultAddress(addresses, 'isDefaultShipping') || data.defaultShippingAddress || null
+    data.defaultBillingAddress =
+      normalizeDefaultAddress(addresses, 'isDefaultBilling') || data.defaultBillingAddress || null
+  }
+
+  const missingProfileFields = getMissingProfileFields(data)
+  data.profileCompletion = missingProfileFields.length
+    ? Math.round(((3 - missingProfileFields.length) / 3) * 100)
+    : 100
+  data.missingProfileFields = missingProfileFields
+
   if (hasAdminRole(user)) {
     return data
   }
 
-  if (originalDoc) {
+  if (originalDoc && !context.allowCustomerProfileUpdate) {
     data.user = originalDoc.user
     data.email = originalDoc.email
     data.accountStatus = originalDoc.accountStatus
     data.internalAdminNotes = originalDoc.internalAdminNotes
+  }
+
+  if (originalDoc && !context.allowCustomerSecurityUpdate) {
+    data.emailVerificationToken = originalDoc.emailVerificationToken
+    data.emailVerificationTokenExpiresAt = originalDoc.emailVerificationTokenExpiresAt
+    data.emailVerified = originalDoc.emailVerified
+    data.emailVerifiedAt = originalDoc.emailVerifiedAt
   }
 
   return data
@@ -47,7 +114,7 @@ export const Customers: CollectionConfig = {
     update: adminsOrSelfCustomer,
   },
   admin: {
-    defaultColumns: ['firstName', 'lastName', 'email', 'accountStatus'],
+    defaultColumns: ['firstName', 'lastName', 'email', 'emailVerified', 'accountStatus'],
     group: 'Ecommerce',
     listSearchableFields: ['firstName', 'lastName', 'email'],
     useAsTitle: 'email',
@@ -88,6 +155,7 @@ export const Customers: CollectionConfig = {
     {
       name: 'phone',
       type: 'text',
+      index: true,
     },
     {
       type: 'row',
@@ -118,6 +186,10 @@ export const Customers: CollectionConfig = {
           name: 'label',
           type: 'text',
           defaultValue: 'Home',
+        },
+        {
+          name: 'company',
+          type: 'text',
         },
         {
           type: 'row',
@@ -225,6 +297,7 @@ export const Customers: CollectionConfig = {
       name: 'accountStatus',
       type: 'select',
       defaultValue: 'active',
+      index: true,
       options: [
         {
           label: 'Active',
@@ -241,6 +314,62 @@ export const Customers: CollectionConfig = {
       },
     },
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'emailVerified',
+          type: 'checkbox',
+          defaultValue: false,
+          index: true,
+          label: 'Email verified',
+          admin: {
+            position: 'sidebar',
+          },
+        },
+        {
+          name: 'emailVerifiedAt',
+          type: 'date',
+          label: 'Email verified at',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+            },
+            position: 'sidebar',
+            readOnly: true,
+          },
+        },
+      ],
+    },
+    {
+      name: 'emailVerificationToken',
+      type: 'text',
+      access: {
+        create: adminFieldOnly,
+        read: adminFieldOnly,
+        update: adminFieldOnly,
+      },
+      admin: {
+        hidden: true,
+      },
+    },
+    {
+      name: 'emailVerificationTokenExpiresAt',
+      type: 'date',
+      access: {
+        create: adminFieldOnly,
+        read: adminFieldOnly,
+        update: adminFieldOnly,
+      },
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+        position: 'sidebar',
+        readOnly: true,
+      },
+      label: 'Email verification expires',
+    },
+    {
       name: 'internalAdminNotes',
       type: 'textarea',
       access: {
@@ -250,6 +379,38 @@ export const Customers: CollectionConfig = {
       },
       admin: {
         position: 'sidebar',
+      },
+    },
+    {
+      name: 'profileCompletion',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
+    {
+      name: 'missingProfileFields',
+      type: 'select',
+      hasMany: true,
+      options: [
+        {
+          label: 'Phone number',
+          value: 'phone',
+        },
+        {
+          label: 'Shipping address',
+          value: 'shippingAddress',
+        },
+        {
+          label: 'Billing address',
+          value: 'billingAddress',
+        },
+      ],
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
       },
     },
   ],

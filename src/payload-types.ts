@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     users: User;
     customers: Customer;
+    orders: Order;
     menus: Menu;
     drawers: Drawer;
     redirects: Redirect;
@@ -98,6 +99,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     customers: CustomersSelect<false> | CustomersSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
     menus: MenusSelect<false> | MenusSelect<true>;
     drawers: DrawersSelect<false> | DrawersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -804,6 +806,7 @@ export interface Customer {
   addresses?:
     | {
         label?: string | null;
+        company?: string | null;
         firstName: string;
         lastName: string;
         line1: string;
@@ -827,7 +830,66 @@ export interface Customer {
    */
   defaultBillingAddress?: string | null;
   accountStatus: 'active' | 'disabled';
+  emailVerified?: boolean | null;
+  emailVerifiedAt?: string | null;
+  emailVerificationToken?: string | null;
+  emailVerificationTokenExpiresAt?: string | null;
   internalAdminNotes?: string | null;
+  profileCompletion?: number | null;
+  missingProfileFields?: ('phone' | 'shippingAddress' | 'billingAddress')[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  customer: number | Customer;
+  orderNumber: string;
+  status: 'processing' | 'paid' | 'fulfilled' | 'completed' | 'canceled';
+  shippingStatus: 'not_shipped' | 'preparing' | 'shipped' | 'delivered';
+  total: number;
+  currency: string;
+  items?:
+    | {
+        name: string;
+        sku?: string | null;
+        quantity: number;
+        unitPrice: number;
+        lineTotal: number;
+        id?: string | null;
+      }[]
+    | null;
+  shippingAddress?: {
+    label?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    company?: string | null;
+    line1?: string | null;
+    line2?: string | null;
+    city?: string | null;
+    stateProvince?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+    phone?: string | null;
+  };
+  billingAddress?: {
+    label?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    company?: string | null;
+    line1?: string | null;
+    line2?: string | null;
+    city?: string | null;
+    stateProvince?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+    phone?: string | null;
+  };
+  trackingNumber?: string | null;
+  trackingURL?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1213,6 +1275,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'customers';
         value: number | Customer;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
       } | null)
     | ({
         relationTo: 'menus';
@@ -1604,6 +1670,7 @@ export interface CustomersSelect<T extends boolean = true> {
     | T
     | {
         label?: T;
+        company?: T;
         firstName?: T;
         lastName?: T;
         line1?: T;
@@ -1620,7 +1687,69 @@ export interface CustomersSelect<T extends boolean = true> {
   defaultShippingAddress?: T;
   defaultBillingAddress?: T;
   accountStatus?: T;
+  emailVerified?: T;
+  emailVerifiedAt?: T;
+  emailVerificationToken?: T;
+  emailVerificationTokenExpiresAt?: T;
   internalAdminNotes?: T;
+  profileCompletion?: T;
+  missingProfileFields?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  customer?: T;
+  orderNumber?: T;
+  status?: T;
+  shippingStatus?: T;
+  total?: T;
+  currency?: T;
+  items?:
+    | T
+    | {
+        name?: T;
+        sku?: T;
+        quantity?: T;
+        unitPrice?: T;
+        lineTotal?: T;
+        id?: T;
+      };
+  shippingAddress?:
+    | T
+    | {
+        label?: T;
+        firstName?: T;
+        lastName?: T;
+        company?: T;
+        line1?: T;
+        line2?: T;
+        city?: T;
+        stateProvince?: T;
+        postalCode?: T;
+        country?: T;
+        phone?: T;
+      };
+  billingAddress?:
+    | T
+    | {
+        label?: T;
+        firstName?: T;
+        lastName?: T;
+        company?: T;
+        line1?: T;
+        line2?: T;
+        city?: T;
+        stateProvince?: T;
+        postalCode?: T;
+        country?: T;
+        phone?: T;
+      };
+  trackingNumber?: T;
+  trackingURL?: T;
   updatedAt?: T;
   createdAt?: T;
 }

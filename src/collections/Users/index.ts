@@ -16,7 +16,11 @@ export const Users: CollectionConfig = {
     defaultColumns: ['name', 'email', 'roles'],
     useAsTitle: 'name',
   },
-  auth: true,
+  auth: {
+    forgotPassword: {
+      expiration: 1000 * 60 * 60,
+    },
+  },
   fields: [
     {
       name: 'name',
