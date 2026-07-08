@@ -13,6 +13,8 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
+import TextInput from '@/ui/forms/textInput'
+
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const pages = await payload.find({
@@ -71,9 +73,12 @@ export default async function Page({ params: paramsPromise }: Args) {
       {/* <PageClient /> */}
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
-
       {draft && <LivePreviewListener />}
-
+      <div className="w-full flex flex-col items-center">
+        <div className="w-full max-w-[1024px] p-4">
+          <TextInput />
+        </div>
+      </div>
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>
