@@ -76,7 +76,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
       <div className="w-full flex flex-col items-center">
         <div className="w-full max-w-[1024px] p-4">
-          <TextInput />
+          <TextInput inputMode="tel" />
         </div>
       </div>
       <RenderHero {...hero} />

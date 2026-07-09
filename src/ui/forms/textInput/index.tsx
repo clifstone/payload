@@ -4,15 +4,40 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { Theme as t } from '../theme'
 
+type TextInputMode = 'text' | 'numeric' | 'decimal' | 'tel' | 'email' | 'url' | 'search' | 'none'
+
 interface TextInputProps {
   label?: string
   alert?: string
   value?: string
   placeholder?: string
-  inputMode?: 'text' | 'numeric' | 'decimal' | 'tel' | 'email' | 'url' | 'search' | 'none'
+  inputMode?: TextInputMode
   size?: 'tiny' | 'small' | 'medium' | 'large'
   shape?: 'round' | 'rounded' | 'square'
   onChange?: (value: string) => void
+}
+
+const normalizeInputValue = (nextValue: string, inputMode: TextInputMode) => {
+  switch (inputMode) {
+    case 'numeric':
+      return nextValue.replace(/\D/g, '')
+
+    case 'decimal':
+      return nextValue.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1')
+
+    case 'tel':
+      return nextValue.replace(/[^\d*#+\-().\s]/g, '')
+
+    case 'email':
+    case 'url':
+      return nextValue.replace(/\s/g, '')
+
+    case 'none':
+    case 'search':
+    case 'text':
+    default:
+      return nextValue
+  }
 }
 
 const TextInput = ({
@@ -149,7 +174,7 @@ const TextInput = ({
   }
 
   const handleChange = (nextValue: string) => {
-    const normalizedValue = inputMode === 'decimal' ? nextValue.replace(/[^\d.]/g, '') : nextValue
+    const normalizedValue = normalizeInputValue(nextValue, inputMode)
 
     setInputValue(normalizedValue)
     setHasUserEdited(true)
@@ -189,7 +214,7 @@ const TextInput = ({
       <input
         ref={inputRef}
         type="text"
-        inputMode={inputMode ? inputMode : 'text'}
+        inputMode={inputMode}
         className={clsx(
           t.input.base,
           t.input.sizes[size],
