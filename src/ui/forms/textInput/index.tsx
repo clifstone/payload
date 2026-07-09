@@ -7,9 +7,9 @@ import { Theme as t } from '../theme'
 interface TextInputProps {
   label?: string
   alert?: string
-  isNum?: boolean
   value?: string
   placeholder?: string
+  inputMode?: 'text' | 'numeric' | 'decimal' | 'tel' | 'email' | 'url' | 'search' | 'none'
   size?: 'tiny' | 'small' | 'medium' | 'large'
   shape?: 'round' | 'rounded' | 'square'
   onChange?: (value: string) => void
@@ -18,7 +18,7 @@ interface TextInputProps {
 const TextInput = ({
   label = 'yer mudda',
   alert,
-  isNum = false,
+  inputMode = 'text',
   value,
   placeholder = 'Placeholder',
   size = 'large',
@@ -50,7 +50,7 @@ const TextInput = ({
 
   const hasLabel = !!label
   const hasPredefinedValue = value !== undefined && value.length > 0
-  const shouldShowActiveBorder = isHovered || isFocused || isTyping || !!alert
+  const shouldShowActiveBorder = isFocused || isTyping || !!alert
 
   useEffect(() => {
     setInputValue(value ?? '')
@@ -149,7 +149,7 @@ const TextInput = ({
   }
 
   const handleChange = (nextValue: string) => {
-    const normalizedValue = isNum ? nextValue.replace(/[^\d.]/g, '') : nextValue
+    const normalizedValue = inputMode === 'decimal' ? nextValue.replace(/[^\d.]/g, '') : nextValue
 
     setInputValue(normalizedValue)
     setHasUserEdited(true)
@@ -189,7 +189,7 @@ const TextInput = ({
       <input
         ref={inputRef}
         type="text"
-        inputMode={isNum ? 'decimal' : undefined}
+        inputMode={inputMode ? inputMode : 'text'}
         className={clsx(
           t.input.base,
           t.input.sizes[size],
