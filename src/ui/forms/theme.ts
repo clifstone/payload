@@ -3,7 +3,7 @@ export const Theme = {
     base: 'w-full isolate border',
   },
   input: {
-    base: 'w-full ring-hidden outline-none outline-hidden relative z-10 bg-transparent',
+    base: 'w-full ring-hidden outline-none outline-hidden relative z-10 bg-transparent autofill:bg-transparent autofill:text-foreground',
     sizes: {
       tiny: 'text-xs px-4 py-3',
       small: 'text-sm px-4 py-3',

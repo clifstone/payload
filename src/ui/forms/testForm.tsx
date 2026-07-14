@@ -1,8 +1,23 @@
 'use client'
 import TextInput from '@/ui/forms/components/text-input'
 import TextArea from '@/ui/forms/components/textarea'
+import Select from '@/ui/forms/components/select'
+import Checkbox from '@/ui/forms/components/checkbox'
 import FormWrapper from '@/ui/forms/formWrapper'
 import Button from '@/ui/buttons/simple'
+
+const serviceOptions = [
+  { label: 'Website Design', value: 'website-design' },
+  { label: 'Frontend Development', value: 'frontend-development' },
+  { label: 'Backend Development', value: 'backend-development' },
+  { label: 'Payload CMS Build', value: 'payload-cms-build' },
+  { label: 'Ecommerce Store', value: 'ecommerce-store' },
+  { label: 'Brand Identity', value: 'brand-identity' },
+  { label: 'SEO Cleanup', value: 'seo-cleanup' },
+  { label: 'Accessibility Audit', value: 'accessibility-audit' },
+  { label: 'Performance Optimization', value: 'performance-optimization' },
+  { label: 'Maintenance Plan', value: 'maintenance-plan' },
+]
 
 const TestForm = () => {
   return (
@@ -37,10 +52,35 @@ const TestForm = () => {
           inputMode='tel'
           required
         />
+        <Select
+          name="service"
+          label="Service"
+          placeholder="Choose a service"
+          options={serviceOptions}
+          searchThreshold={6}
+          required
+        />
         <TextArea
           label="Message"
           placeholder="What do you want?"
           required
+        />
+        <TextInput
+          label="Password"
+          placeholder="Password"
+          inputMode='password'
+          required
+        />
+        <Checkbox
+          name="terms"
+          label="I agree to the terms and conditions."
+          required
+          classNames={{
+            box: 'rounded-md border-2 border-primary/60 peer-checked:border-primary peer-checked:bg-primary',
+            icon: 'text-primary-foreground',
+            label: 'text-base',
+            alert: 'ml-8',
+          }}
         />
         <Button variant='solid' type="submit">Submit</Button>
       </div>

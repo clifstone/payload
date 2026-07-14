@@ -11,7 +11,9 @@ type TextInputValidationOptions = {
   inputMode?: FieldInputMode
   label?: string
   max?: number
+  maxLength?: number
   min?: number
+  minLength?: number
   required?: boolean
   value?: string
 }
@@ -22,6 +24,18 @@ type TextareaValidationOptions = {
   minLength?: number
   required?: boolean
   value?: string
+}
+
+type SelectValidationOptions = {
+  label?: string
+  required?: boolean
+  value?: string
+}
+
+type CheckboxValidationOptions = {
+  checked?: boolean
+  label?: string
+  required?: boolean
 }
 
 export const validateRequired = (value: string, label?: string) => {
@@ -105,12 +119,20 @@ export const validateUrl = (value: string) => {
   }
 }
 
+export const validatePasswordConfirmation = (password: string, confirmedPassword: string) => {
+  if (!confirmedPassword) return 'Confirm your password.'
+
+  return password === confirmedPassword ? undefined : 'Passwords do not match.'
+}
+
 export const getTextInputValidationMessage = ({
   decimalPlaces,
   inputMode = 'text',
   label,
   max,
+  maxLength,
   min,
+  minLength,
   required,
   value,
 }: TextInputValidationOptions) => {
@@ -140,6 +162,9 @@ export const getTextInputValidationMessage = ({
     case 'url':
       return validateUrl(trimmedValue)
 
+    case 'password':
+      return validateMinLength(trimmedValue, minLength) ?? validateMaxLength(trimmedValue, maxLength)
+
     case 'none':
     case 'search':
     case 'text':
@@ -167,4 +192,24 @@ export const getTextareaValidationMessage = ({
   if (!rawValue) return undefined
 
   return validateMinLength(rawValue, minLength) ?? validateMaxLength(rawValue, maxLength)
+}
+
+export const getSelectValidationMessage = ({
+  label,
+  required,
+  value,
+}: SelectValidationOptions) => {
+  if (!required) return undefined
+
+  return validateRequired(value ?? '', label)
+}
+
+export const getCheckboxValidationMessage = ({
+  checked,
+  label,
+  required,
+}: CheckboxValidationOptions) => {
+  if (!required) return undefined
+
+  return validateRequired(checked ? 'checked' : '', label)
 }

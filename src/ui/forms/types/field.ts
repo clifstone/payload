@@ -6,6 +6,7 @@ export type FieldInputMode =
   | 'email'
   | 'url'
   | 'search'
+  | 'password'
   | 'none'
 
 export type FieldSize = 'tiny' | 'small' | 'medium' | 'large'

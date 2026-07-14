@@ -1,11 +1,13 @@
 'use client'
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useId, useRef, useState, type ComponentPropsWithoutRef, type KeyboardEvent } from 'react'
 import clsx from 'clsx'
 import { Theme as t } from '../../theme'
 import Button from '@/ui/buttons/simple'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 import { useFieldBorder } from '../../hooks/use-field-border'
 import { useFieldInteraction } from '../../hooks/use-field-interaction'
@@ -18,6 +20,12 @@ import type { FieldStepDirection } from '../../types/field'
 import type { TextInputProps } from './types'
 export type { TextInputMode, TextInputProps } from './types'
 export { getTextInputValidationMessage }
+
+const getHtmlInputMode = (
+  inputMode: TextInputProps['inputMode'],
+): ComponentPropsWithoutRef<'input'>['inputMode'] => {
+  return inputMode === 'password' ? undefined : inputMode
+}
 
 const getInitialInputValue = ({
   decimalPlaces,
@@ -45,12 +53,18 @@ const TextInput = ({
   max = 1001,
   incrementBy = 1,
   decimalPlaces = 2,
+  minLength,
+  maxLength,
+  validatePassword = false,
+  validatePasswordLabel = 'Confirm password',
+  confirmAlert,
   value,
   placeholder = 'Placeholder',
   size = 'large',
   shape = 'rounded',
   variant = 'default',
   onChange,
+  onConfirmChange,
 }: TextInputProps) => {
   const rawId = useId()
   const sanitizedId = rawId.replace(/:/g, '')
@@ -62,6 +76,7 @@ const TextInput = ({
   const [inputValue, setInputValue] = useState(() =>
     getInitialInputValue({ decimalPlaces, inputMode, max, min, value }),
   )
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const interaction = useFieldInteraction()
 
   const hasLabel = !!label
@@ -70,8 +85,10 @@ const TextInput = ({
   const isTel = inputMode === 'tel'
   const isNumeric = inputMode === 'numeric'
   const isDecimal = inputMode === 'decimal'
+  const isPassword = inputMode === 'password'
   const isNumberMode = isNumeric || isDecimal
   const formValue = isTel ? formatNorthAmericanPhoneE164(inputValue) : inputValue
+  const htmlInputMode = getHtmlInputMode(inputMode)
   const fallbackAccessibleName = ariaLabel ?? name ?? placeholder
 
   const border = useFieldBorder({
@@ -144,6 +161,11 @@ const TextInput = ({
     numberField.stepBy(direction)
   }
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((currentVisibility) => !currentVisibility)
+    inputRef.current?.focus()
+  }
+
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (!isNumberMode) return
 
@@ -160,162 +182,195 @@ const TextInput = ({
   }
 
   return (
-    <div className="flex gap-2">
-      <div ref={border.fieldRef} className="relative w-full isolate">
-        {hasLabel && (
-          <label
-            ref={border.labelRef}
-            htmlFor={inputId}
-            className={clsx(
-              t.label.base,
-              t.label.sizes[size],
-              t.variants[variant].label
-            )}
-          >
-            {label}
-          </label>
-        )}
-
-        <input
-          ref={inputRef}
-          id={inputId}
-          type="text"
-          name={isTel ? undefined : name}
-          required={required}
-          inputMode={inputMode}
-          role={isNumberMode ? 'spinbutton' : undefined}
-          aria-label={hasLabel ? undefined : fallbackAccessibleName}
-          aria-invalid={!!alert}
-          aria-required={required || undefined}
-          aria-describedby={alert ? alertId : undefined}
-          aria-errormessage={alert ? alertId : undefined}
-          aria-valuemin={isNumberMode ? numberField.effectiveMin : undefined}
-          aria-valuemax={isNumberMode ? numberField.effectiveMax : undefined}
-          aria-valuenow={isNumberMode ? numberField.numericValue : undefined}
-          className={clsx(
-            t.input.base,
-            t.input.sizes[size],
-            t.input.shapes[shape],
-            isNumberMode && 'pr-24',
-            alert && 'text-red-500',
+    <div className="flex flex-col gap-3">
+      <div className="flex gap-2">
+        <div ref={border.fieldRef} className="relative w-full isolate">
+          {hasLabel && (
+            <label
+              ref={border.labelRef}
+              htmlFor={inputId}
+              className={clsx(
+                t.label.base,
+                t.label.sizes[size],
+                t.variants[variant].label
+              )}
+            >
+              {label}
+            </label>
           )}
-          value={inputValue}
-          placeholder={placeholder || undefined}
-          onMouseEnter={interaction.handleMouseEnter}
-          onMouseLeave={interaction.handleMouseLeave}
-          onFocus={handleFocus}
-          onBlur={interaction.handleBlurState}
-          onChange={(event) => handleChange(event.target.value)}
-          onKeyDown={handleKeyDown}
-        />
 
-        {isTel && name && <input type="hidden" name={name} value={formValue} />}
+          <input
+            ref={inputRef}
+            id={inputId}
+            type={isPassword && !isPasswordVisible ? 'password' : 'text'}
+            name={isTel ? undefined : name}
+            required={required}
+            inputMode={htmlInputMode}
+            minLength={minLength}
+            maxLength={maxLength}
+            autoComplete={isPassword ? 'current-password' : undefined}
+            role={isNumberMode ? 'spinbutton' : undefined}
+            aria-label={hasLabel ? undefined : fallbackAccessibleName}
+            aria-invalid={!!alert}
+            aria-required={required || undefined}
+            aria-describedby={alert ? alertId : undefined}
+            aria-errormessage={alert ? alertId : undefined}
+            aria-valuemin={isNumberMode ? numberField.effectiveMin : undefined}
+            aria-valuemax={isNumberMode ? numberField.effectiveMax : undefined}
+            aria-valuenow={isNumberMode ? numberField.numericValue : undefined}
+            className={clsx(
+              t.input.base,
+              t.input.sizes[size],
+              t.input.shapes[shape],
+              isNumberMode && 'pr-24',
+              alert && 'text-red-500',
+            )}
+            value={inputValue}
+            placeholder={placeholder || undefined}
+            onMouseEnter={interaction.handleMouseEnter}
+            onMouseLeave={interaction.handleMouseLeave}
+            onFocus={handleFocus}
+            onBlur={interaction.handleBlurState}
+            onChange={(event) => handleChange(event.target.value)}
+            onKeyDown={handleKeyDown}
+          />
 
-        {alert && (
-          <div
-            id={alertId}
-            ref={border.alertRef}
-            role="alert"
-            className="absolute right-4 bottom-0 translate-y-1/2 z-10 px-1 text-xs font-semibold text-red-500 tracking-[0.0375rem]"
+          {isTel && name && <input type="hidden" name={name} value={formValue} />}
+
+          {alert && (
+            <div
+              id={alertId}
+              ref={border.alertRef}
+              role="alert"
+              className="absolute right-4 bottom-0 translate-y-1/2 z-10 px-1 text-xs font-semibold text-red-500 tracking-[0.0375rem]"
+            >
+              {alert}
+            </div>
+          )}
+
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible"
+            width={border.width}
+            height={border.height}
+            viewBox={`0 0 ${border.width} ${border.height}`}
           >
-            {alert}
+            <defs>
+              <mask id={maskId}>
+                <rect width="100%" height="100%" fill="white" />
+
+                {hasLabel && (
+                  <rect
+                    x={border.labelCutout.x}
+                    y={border.labelCutout.y}
+                    width={border.labelCutout.width}
+                    height={border.labelCutout.height}
+                    fill="black"
+                  />
+                )}
+
+                {alert && (
+                  <rect
+                    x={border.alertCutout.x}
+                    y={border.alertCutout.y}
+                    width={border.alertCutout.width}
+                    height={border.alertCutout.height}
+                    fill="black"
+                  />
+                )}
+              </mask>
+            </defs>
+
+            <rect
+              x="0.5"
+              y="0.5"
+              width={Math.max(border.width - 1, 0)}
+              height={Math.max(border.height - 1, 0)}
+              rx={border.radius}
+              ry={border.radius}
+              fill="transparent"
+              stroke="currentColor"
+              strokeWidth={1.55}
+              className={clsx(
+                'text-border',
+                alert && 'text-red-500'
+              )}
+              mask={`url(#${maskId})`}
+              shapeRendering="geometricPrecision"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            <rect
+              ref={border.borderRef}
+              x="1"
+              y="1"
+              width={Math.max(border.width - 2, 0)}
+              height={Math.max(border.height - 2, 0)}
+              rx={border.radius}
+              ry={border.radius}
+              fill="transparent"
+              stroke="currentColor"
+              strokeDasharray={border.pathLength}
+              strokeDashoffset={shouldShowActiveBorder ? 0 : border.pathLength}
+              className={clsx(
+                'stroke-2 transition-[stroke-dashoffset,stroke] duration-250',
+                alert && 'text-red-500',
+                !alert && 'text-primary',
+              )}
+              mask={`url(#${maskId})`}
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+        </div>
+        {isPassword && (
+          <div className="flex gap-2 items-center">
+            <Button
+              size='large'
+              aria-controls={inputId}
+              aria-label={isPasswordVisible ? `Hide ${label || name || 'password'}` : `Show ${label || name || 'password'}`}
+              aria-pressed={isPasswordVisible}
+              startIcon={isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              onClick={togglePasswordVisibility}
+            />
           </div>
         )}
-
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible"
-          width={border.width}
-          height={border.height}
-          viewBox={`0 0 ${border.width} ${border.height}`}
-        >
-          <defs>
-            <mask id={maskId}>
-              <rect width="100%" height="100%" fill="white" />
-
-              {hasLabel && (
-                <rect
-                  x={border.labelCutout.x}
-                  y={border.labelCutout.y}
-                  width={border.labelCutout.width}
-                  height={border.labelCutout.height}
-                  fill="black"
-                />
-              )}
-
-              {alert && (
-                <rect
-                  x={border.alertCutout.x}
-                  y={border.alertCutout.y}
-                  width={border.alertCutout.width}
-                  height={border.alertCutout.height}
-                  fill="black"
-                />
-              )}
-            </mask>
-          </defs>
-
-          <rect
-            x="0.5"
-            y="0.5"
-            width={Math.max(border.width - 1, 0)}
-            height={Math.max(border.height - 1, 0)}
-            rx={border.radius}
-            ry={border.radius}
-            fill="transparent"
-            stroke="currentColor"
-            strokeWidth={1.55}
-            className={clsx(
-              'text-border',
-              alert && 'text-red-500'
-            )}
-            mask={`url(#${maskId})`}
-            shapeRendering="geometricPrecision"
-            vectorEffect="non-scaling-stroke"
-          />
-
-          <rect
-            ref={border.borderRef}
-            x="1"
-            y="1"
-            width={Math.max(border.width - 2, 0)}
-            height={Math.max(border.height - 2, 0)}
-            rx={border.radius}
-            ry={border.radius}
-            fill="transparent"
-            stroke="currentColor"
-            strokeDasharray={border.pathLength}
-            strokeDashoffset={shouldShowActiveBorder ? 0 : border.pathLength}
-            className={clsx(
-              'stroke-2 transition-[stroke-dashoffset,stroke] duration-250',
-              alert && 'text-red-500',
-              !alert && 'text-primary',
-            )}
-            mask={`url(#${maskId})`}
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
+        {isNumberMode && (
+          <div className="flex gap-2 items-center">
+            <Button
+              size='large'
+              aria-controls={inputId}
+              aria-label={`Decrease ${label || name || 'value'}`}
+              startIcon={<RemoveIcon />}
+              onClick={() => handleNumericStep(-1)}
+              disabled={!numberField.canDecrement}
+            />
+            <Button
+              size='large'
+              aria-controls={inputId}
+              aria-label={`Increase ${label || name || 'value'}`}
+              startIcon={<AddIcon />}
+              onClick={() => handleNumericStep(1)}
+              disabled={!numberField.canIncrement}
+            />
+          </div>
+        )}
       </div>
-      {isNumberMode && (
-        <div className="flex gap-2 items-center">
-          <Button
-            size='large'
-            aria-controls={inputId}
-            aria-label={`Decrease ${label || name || 'value'}`}
-            startIcon={<RemoveIcon />}
-            onClick={() => handleNumericStep(-1)}
-            disabled={!numberField.canDecrement}
-          />
-          <Button
-            size='large'
-            aria-controls={inputId}
-            aria-label={`Increase ${label || name || 'value'}`}
-            startIcon={<AddIcon />}
-            onClick={() => handleNumericStep(1)}
-            disabled={!numberField.canIncrement}
-          />
-        </div>
+
+      {isPassword && validatePassword && (
+        <TextInput
+          label={validatePasswordLabel}
+          alert={confirmAlert}
+          required={required}
+          inputMode="password"
+          minLength={minLength}
+          maxLength={maxLength}
+          placeholder={placeholder}
+          size={size}
+          shape={shape}
+          variant={variant}
+          onChange={onConfirmChange}
+        />
       )}
     </div>
   )

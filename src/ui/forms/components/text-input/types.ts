@@ -16,8 +16,14 @@ export interface TextInputProps {
   max?: number
   incrementBy?: number
   decimalPlaces?: number
+  minLength?: number
+  maxLength?: number
+  validatePassword?: boolean
+  validatePasswordLabel?: string
+  confirmAlert?: string
   size?: FieldSize
   shape?: FieldShape
   variant?: FieldVariant
   onChange?: (value: string) => void
+  onConfirmChange?: (value: string) => void
 }
