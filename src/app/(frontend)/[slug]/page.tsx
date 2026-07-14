@@ -13,7 +13,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
-import TextInput from '@/ui/forms/textInput'
+import TestForm from '@/ui/forms/testForm'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -76,7 +76,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
       <div className="w-full flex flex-col items-center">
         <div className="w-full max-w-[1024px] p-4">
-          <TextInput inputMode="tel" />
+          <TestForm />
         </div>
       </div>
       <RenderHero {...hero} />
