@@ -24,7 +24,7 @@ interface ButtonProps {
   [key: string]: any // For additional props
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   type = 'button',
   startIcon = null,
   endIcon = null,
@@ -41,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
   transition,
   navigateTo,
   ...props
-}) => {
+}: ButtonProps) => {
   return (
     <button
       type={type}

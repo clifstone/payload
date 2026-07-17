@@ -343,7 +343,8 @@ const Select = ({
             strokeDasharray={border.pathLength}
             strokeDashoffset={shouldShowActiveBorder ? 0 : border.pathLength}
             className={clsx(
-              'stroke-2 transition-[stroke-dashoffset,stroke] duration-250',
+              'stroke-2 transition-[stroke-dashoffset,stroke]',
+              border.width > 350 ? 'duration-600' : 'duration-300',
               alert && 'text-red-500',
               !alert && 'text-primary',
             )}
@@ -375,7 +376,7 @@ const Select = ({
                   aria-selected={isSelected}
                   className={clsx(
                     'flex w-full items-center rounded-md px-3 py-2 text-left text-sm transition-colors',
-                    isActive && 'bg-primary text-primary-foreground',
+                    isActive && 'bg-primary text-white font-bold',
                     !isActive && isSelected && 'bg-muted font-semibold',
                     !isActive && !isSelected && 'hover:bg-muted',
                   )}

@@ -314,7 +314,8 @@ const TextInput = ({
               strokeDasharray={border.pathLength}
               strokeDashoffset={shouldShowActiveBorder ? 0 : border.pathLength}
               className={clsx(
-                'stroke-2 transition-[stroke-dashoffset,stroke] duration-250',
+                'stroke-2 transition-[stroke-dashoffset,stroke] ease-in-out',
+                border.width > 350 ? 'duration-600' : 'duration-300',
                 alert && 'text-red-500',
                 !alert && 'text-primary',
               )}

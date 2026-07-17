@@ -42,8 +42,8 @@ export const Theme: Theme = {
     buttonSize: {
       tiny: 'text-xs p-1',
       small: 'text-sm p-2',
-      medium: 'p-2',
-      large: 'text-lg p-3',
+      medium: 'p-4',
+      large: 'text-lg p-4',
     },
     iconSize: {
       tiny: 'w-[16px]',

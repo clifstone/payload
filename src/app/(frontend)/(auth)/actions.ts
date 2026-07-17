@@ -21,6 +21,10 @@ const value = (formData: FormData, key: string): string => {
   return String(formData.get(key) || '').trim()
 }
 
+const checked = (formData: FormData, key: string): boolean => {
+  return formData.get(key) === 'on'
+}
+
 const redirectWithStatus = (path: string, status: string): never => {
   const separator = path.includes('?') ? '&' : '?'
   redirect(`${path}${separator}status=${encodeURIComponent(status)}`)
@@ -88,8 +92,10 @@ export const registerCustomer = async (formData: FormData): Promise<void> => {
   const lastName = value(formData, 'lastName')
   const email = value(formData, 'email').toLowerCase()
   const password = value(formData, 'password')
+  const iUnderstand = checked(formData, 'iUnderstand')
+  const marketingEmailOptIn = checked(formData, 'marketingEmailOptIn')
 
-  if (!firstName || !lastName || !email || !password) {
+  if (!firstName || !lastName || !email || !password || !iUnderstand) {
     redirectWithStatus('/register', 'missing-required')
   }
 
@@ -127,6 +133,7 @@ export const registerCustomer = async (formData: FormData): Promise<void> => {
     email,
     firstName,
     lastName,
+    marketingEmailOptIn,
     user: user.id,
   }
 
