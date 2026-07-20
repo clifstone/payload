@@ -182,11 +182,11 @@ export const registerCustomer = async (formData: FormData): Promise<void> => {
   redirect('/account')
 }
 
-export const requestPasswordReset = async (formData: FormData): Promise<void> => {
+const sendPasswordResetEmail = async (formData: FormData): Promise<'missing-required' | 'password-reset-sent'> => {
   const email = value(formData, 'email').toLowerCase()
 
   if (!email) {
-    redirectWithStatus('/forgot-password', 'missing-required')
+    return 'missing-required'
   }
 
   const payload = await getPayload({ config })
@@ -217,7 +217,20 @@ export const requestPasswordReset = async (formData: FormData): Promise<void> =>
     })
   }
 
-  redirect('/forgot-password?status=password-reset-sent')
+  return 'password-reset-sent'
+}
+
+export const requestPasswordReset = async (formData: FormData): Promise<void> => {
+  const status = await sendPasswordResetEmail(formData)
+
+  redirectWithStatus('/forgot-password', status)
+}
+
+export const requestPasswordResetInPlace = async (
+  _previousStatus: string | undefined,
+  formData: FormData,
+): Promise<string> => {
+  return sendPasswordResetEmail(formData)
 }
 
 export const resetCustomerPassword = async (formData: FormData): Promise<void> => {

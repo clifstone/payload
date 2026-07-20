@@ -68,11 +68,6 @@
   --color-quinary-800: hsl(from var(--quinary) h s 20%);
   --color-quinary-900: hsl(from var(--quinary) h s 10%);
   --color-quinary-950: hsl(from var(--quinary) h s 5%);
-
-  --color-secondary: var(--secondary);
-  --color-tertiary: var(--tertiary);
-  --color-quaternary: var(--quaternary);
-  --color-quinary: var(--quinary);
 }
 
 @theme {
@@ -81,11 +76,10 @@
 
 :root {
   --primary: #ff0081;
-  --secondary: #ffaed7;
-  --tertiary: #ffcae5;
-  --quaternary: #C81D25;
-  --quinary: #BFD7EA;
-  --article-order: 0;
+  --secondary: #bf0057;
+  --tertiary: #810031;
+  --quaternary: #ff72b1;
+  --quinary: #ffb5e3;
 }
 
 @layer base {

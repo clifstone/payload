@@ -2,11 +2,11 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { AccountLinks, LoginForm, RegisterForm } from '@/ui/account/authForms'
+import { AccountLinks, ForgotPasswordForm, LoginForm, RegisterForm } from '@/ui/account/authForms'
 import { useDrawer } from '../../context/drawers'
 import Wrapper from '../wrapper'
 
-type DrawerMode = 'login' | 'register'
+type DrawerMode = 'forgot-password' | 'login' | 'register'
 type AuthState = 'checking' | 'disabled' | 'signed-in' | 'signed-out'
 
 const Account = () => {
@@ -56,10 +56,19 @@ const Account = () => {
       {authState === 'signed-out' &&
         (mode === 'login' ? (
           <LoginForm
+            switchToForgotPassword={{
+              label: 'Forgot Password?',
+              onClick: () => setMode('forgot-password'),
+            }}
             switchToRegister={{ label: 'Create account', onClick: () => setMode('register') }}
           />
-        ) : (
+        ) : mode === 'register' ? (
           <RegisterForm switchToLogin={{ label: 'Log in', onClick: () => setMode('login') }} />
+        ) : (
+          <ForgotPasswordForm
+            inPlace
+            switchToLogin={{ label: 'Log in', onClick: () => setMode('login') }}
+          />
         ))}
       {authState === 'disabled' && (
         <div className="grid gap-4 p-4 text-sm text-neutral-700">

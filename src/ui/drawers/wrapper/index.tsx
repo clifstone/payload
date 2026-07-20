@@ -83,7 +83,7 @@ const Wrapper = ({
       <section ref={foreWrapperRef} className={clsx('flex flex-col w-full h-full bg-white', maxW)}>
         <Header toggleDrawer={toggleDrawer} name={name} title={title} />
         <div className="flex-grow flex overflow-y-auto">
-          <div className="flex-grow">{children}</div>
+          <div className="flex-grow flex">{children}</div>
         </div>
       </section>
 

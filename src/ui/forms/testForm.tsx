@@ -21,7 +21,26 @@ const serviceOptions = [
 
 const TestForm = () => {
   return (
-    <FormWrapper
+    <>
+    <div className="flex flex-col gap-8">
+      <div className="flex gap-8">
+        <div className="w-[80px] h-[80px] bg-primary" />
+        <div className="w-[80px] h-[80px] bg-secondary" />
+        <div className="w-[80px] h-[80px] bg-tertiary" />
+        <div className="w-[80px] h-[80px] bg-quaternary" />
+        <div className="w-[80px] h-[80px] bg-quinary" />
+      </div>
+      <div className="flex gap-8">
+        <div className="w-[80px] h-[80px] bg-[#ff0081]" />
+        <div className="w-[80px] h-[80px] bg-[#ffaed7]" />
+        <div className="w-[80px] h-[80px] bg-[#ffcae5]" />
+        <div className="w-[80px] h-[80px] bg-[#C81D25]" />
+        <div className="w-[80px] h-[80px] bg-[#BFD7EA]" />
+      </div>
+    </div>
+
+    <div className="hidden">
+      <FormWrapper
       onSubmit={(e) => {
         e.preventDefault()
         console.log('sumbit works')
@@ -85,6 +104,8 @@ const TestForm = () => {
         <Button variant='solid' type="submit">Submit</Button>
       </div>
     </FormWrapper>
+    </div>
+    </>
   )
 }
 

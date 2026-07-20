@@ -1,9 +1,9 @@
-const speed = 'duration-150'
+const speed = 'duration-300'
 
-export type ButtonSize = 'tiny' | 'small' | 'medium' | 'large'
+export type ButtonSize = 'tiny' | 'small' | 'medium' | 'large' | 'form'
 export type ButtonShape = 'square' | 'rounded' | 'round'
 export type ButtonVariant = 'basic' | 'text' | 'outline' | 'solid' | 'translucent'
-export type ButtonColor = 'plain' | 'primary' | 'dark'
+export type ButtonColor = 'plain' | 'primary' | 'secondary' | 'dark'
 
 interface SizeMap {
   buttonSize: Record<ButtonSize, string>
@@ -42,14 +42,16 @@ export const Theme: Theme = {
     buttonSize: {
       tiny: 'text-xs p-1',
       small: 'text-sm p-2',
-      medium: 'p-4',
-      large: 'text-lg p-4',
+      medium: 'p-2',
+      large: 'text-lg p-3',
+      form: 'p-4'
     },
     iconSize: {
       tiny: 'w-[16px]',
       small: 'w-[18px]',
       medium: 'w-[24px]',
       large: 'w-[32px]',
+      form: 'w-[32px]'
     },
   },
   shapes: {
@@ -64,6 +66,8 @@ export const Theme: Theme = {
         plain: 'large:hover:bg-neutral-200 active:border-neutral-400',
         primary:
           'decoration-primary/[0.35] large:hover:decoration-primary large:hover:text-primary',
+        secondary:
+          'decoration-primary/[0.35] large:hover:decoration-primary large:hover:text-primary',
         dark: '', // Adding dark color for completeness
       },
     },
@@ -73,6 +77,8 @@ export const Theme: Theme = {
         plain:
           'decoration-neutral-400 large:hover:decoration-neutral-500 active:decoration-neutral-400 active:text-neutral-400',
         primary:
+          'decoration-primary large:hover:text-primary active:decoration-neutral-200 active:text-neutral-200 large:hover:active:decoration-neutral-200 large:hover:active:text-neutral-200',
+        secondary:
           'text-primary decoration-primary/[0.35] large:hover:decoration-primary active:decoration-primary-400 active:text-neutral-400',
         dark: '', // Adding dark color for completeness
       },
@@ -81,7 +87,8 @@ export const Theme: Theme = {
       base: `border transition-all ${speed} ease-out`,
       colors: {
         plain: 'large:hover:border-neutral-400 active:border-neutral-400 active:text-neutral-400',
-        primary: 'large:hover:border-primary large:hover:text-primary',
+        primary: 'border-primary large:hover:text-primary large:hover:active:text-white large:hover:active:bg-primary',
+        secondary: 'border-secondary large:hover:border-primary large:hover:text-primary',
         dark: 'border-white text-white large:hover:bg-white/10 large:hover:border-neutral-200 large:hover:text-neutral-200',
       },
     },
@@ -90,6 +97,7 @@ export const Theme: Theme = {
       colors: {
         plain: 'bg-neutral-200 large:hover:bg-neutral-300 active:border-neutral-400',
         primary: 'bg-primary text-white large:hover:bg-primary-700 active:border-white',
+        secondary: 'bg-secondary text-white large:hover:bg-secondary-700 active:border-white',
         dark: '', // Adding dark color for completeness
       },
     },
@@ -100,6 +108,8 @@ export const Theme: Theme = {
           'bg-neutral-200/50 large:hover:bg-neutral-300/80 active:border-neutral-400 active:text-neutral-600',
         primary:
           'bg-primary/50 text-white/80 hover:text-white/90 large:hover:bg-primary-700/80 active:border-white',
+        secondary:
+          'bg-secondary/50 text-white/80 hover:text-white/90 large:hover:bg-secondary-700/80 active:border-white',
         dark: '', // Adding dark color for completeness
       },
     },
