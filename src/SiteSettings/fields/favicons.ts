@@ -3,7 +3,7 @@ import type { Field, UploadFieldSingleValidation } from 'payload'
 const folderDescription = 'Store this asset in Site Settings / Favicons in the Media library.'
 
 const validateICO: UploadFieldSingleValidation = async (value, { req }) => {
-  if (!value) return true
+  if (!value) return 'The site favicon is required.'
 
   const media =
     typeof value === 'object' && value !== null
