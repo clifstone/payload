@@ -14,23 +14,16 @@ import TextInput, {
   getTextInputValidationMessage,
   type TextInputProps,
 } from '../components/text-input'
-import Checkbox, {
-  getCheckboxValidationMessage,
-  type CheckboxProps,
-} from '../components/checkbox'
-import Select, {
-  getSelectValidationMessage,
-  type SelectProps,
-} from '../components/select'
-import Textarea, {
-  getTextareaValidationMessage,
-  type TextareaProps,
-} from '../components/textarea'
+import Checkbox, { getCheckboxValidationMessage, type CheckboxProps } from '../components/checkbox'
+import Select, { getSelectValidationMessage, type SelectProps } from '../components/select'
+import Textarea, { getTextareaValidationMessage, type TextareaProps } from '../components/textarea'
 import { validatePasswordConfirmation } from '../utilities/validation'
+import clsx from 'clsx'
 
 type FormProps = ComponentPropsWithoutRef<'form'>
 
 interface Props extends Omit<FormProps, 'onSubmit'> {
+  className?: string
   children?: ReactNode
   onSubmit?: FormProps['onSubmit']
 }
@@ -46,7 +39,7 @@ const getConfirmFieldKey = (fieldKey: string) => `${fieldKey}-confirmation`
 const getStringFieldValue = (values: FormValues, fieldKey: string, fallbackValue?: string) => {
   const value = values[fieldKey]
 
-  return typeof value === 'string' ? value : fallbackValue ?? ''
+  return typeof value === 'string' ? value : (fallbackValue ?? '')
 }
 
 const isTextInputElement = (child: ReactNode): child is ReactElement<TextInputProps> => {
@@ -65,7 +58,13 @@ const isSelectElement = (child: ReactNode): child is ReactElement<SelectProps> =
   return isValidElement(child) && child.type === Select
 }
 
-const FormWrapper = ({ children, noValidate = true, onSubmit, ...formProps }: Props) => {
+const FormWrapper = ({
+  className = 'flex flex-col gap-8',
+  children,
+  noValidate = true,
+  onSubmit,
+  ...formProps
+}: Props) => {
   const [errors, setErrors] = useState<FormErrors>({})
   const [values, setValues] = useState<FormValues>({})
 
@@ -90,9 +89,10 @@ const FormWrapper = ({ children, noValidate = true, onSubmit, ...formProps }: Pr
 
         if (!message && child.props.inputMode === 'password' && child.props.validatePassword) {
           const confirmedValue = getStringFieldValue(values, confirmFieldKey)
-          const confirmMessage = value || confirmedValue
-            ? validatePasswordConfirmation(value, confirmedValue)
-            : undefined
+          const confirmMessage =
+            value || confirmedValue
+              ? validatePasswordConfirmation(value, confirmedValue)
+              : undefined
 
           if (confirmMessage) {
             nextErrors[confirmFieldKey] = confirmMessage
@@ -105,7 +105,7 @@ const FormWrapper = ({ children, noValidate = true, onSubmit, ...formProps }: Pr
       if (isCheckboxElement(child)) {
         const fieldKey = getFieldKey(child.props, childPath)
         const value = values[fieldKey]
-        const checked = typeof value === 'boolean' ? value : child.props.checked ?? false
+        const checked = typeof value === 'boolean' ? value : (child.props.checked ?? false)
         const message = getCheckboxValidationMessage({
           ...child.props,
           checked,
@@ -297,8 +297,12 @@ const FormWrapper = ({ children, noValidate = true, onSubmit, ...formProps }: Pr
   }
 
   return (
-    <form {...formProps} noValidate={noValidate} onSubmit={handleSubmit}>
-      {decorateChildren(children)}
+    <form
+      {...formProps}
+      noValidate={noValidate}
+      onSubmit={handleSubmit}
+    >
+      <div className={clsx(className && className)}>{decorateChildren(children)}</div>
     </form>
   )
 }

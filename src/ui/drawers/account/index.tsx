@@ -48,7 +48,12 @@ const Account = () => {
   }, [isOpen])
 
   return (
-    <Wrapper name={drawerName} title={theTitle} isOpen={isOpen} direction={'right'}>
+    <Wrapper
+      name={drawerName}
+      title={theTitle}
+      isOpen={isOpen}
+      direction={'right'}
+    >
       {authState === 'checking' && (
         <div className="p-4 text-sm text-neutral-600">Checking account status...</div>
       )}
@@ -73,7 +78,10 @@ const Account = () => {
       {authState === 'disabled' && (
         <div className="grid gap-4 p-4 text-sm text-neutral-700">
           <p>This account is disabled. Please contact support for help accessing your account.</p>
-          <Link className="w-fit rounded-md border px-4 py-2 text-sm font-medium" href="/logout">
+          <Link
+            className="w-fit rounded-md border px-4 py-2 text-sm font-medium"
+            href="/logout"
+          >
             Log out
           </Link>
         </div>

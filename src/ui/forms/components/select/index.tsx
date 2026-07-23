@@ -75,7 +75,7 @@ const Select = ({
   const isSearchable = options.length >= searchThreshold
   const selectedOption = getSelectedOption(options, selectValue)
   const fallbackAccessibleName = ariaLabel ?? name ?? placeholder
-  const displayValue = isOpen && isSearchable ? query : selectedOption?.label ?? ''
+  const displayValue = isOpen && isSearchable ? query : (selectedOption?.label ?? '')
   const shouldShowActiveBorder = interaction.isFocused || isOpen || !!alert
 
   const filteredOptions = useMemo(() => {
@@ -84,8 +84,10 @@ const Select = ({
     if (!isSearchable || !normalizedQuery) return options
 
     return options.filter((option) => {
-      return option.label.toLowerCase().includes(normalizedQuery)
-        || option.value.toLowerCase().includes(normalizedQuery)
+      return (
+        option.label.toLowerCase().includes(normalizedQuery) ||
+        option.value.toLowerCase().includes(normalizedQuery)
+      )
     })
   }, [isSearchable, options, query])
 
@@ -131,12 +133,12 @@ const Select = ({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (
-      !isOpen
-      && isSearchable
-      && event.key.length === 1
-      && !event.altKey
-      && !event.ctrlKey
-      && !event.metaKey
+      !isOpen &&
+      isSearchable &&
+      event.key.length === 1 &&
+      !event.altKey &&
+      !event.ctrlKey &&
+      !event.metaKey
     ) {
       event.preventDefault()
       setIsOpen(true)
@@ -161,7 +163,9 @@ const Select = ({
 
     if (event.key === 'ArrowDown') {
       event.preventDefault()
-      setActiveIndex((currentIndex) => Math.min(currentIndex + 1, Math.max(filteredOptions.length - 1, 0)))
+      setActiveIndex((currentIndex) =>
+        Math.min(currentIndex + 1, Math.max(filteredOptions.length - 1, 0)),
+      )
       return
     }
 
@@ -184,8 +188,8 @@ const Select = ({
       const activeElement = document.activeElement
 
       if (
-        activeElement
-        && (inputRef.current?.contains(activeElement) || listboxRef.current?.contains(activeElement))
+        activeElement &&
+        (inputRef.current?.contains(activeElement) || listboxRef.current?.contains(activeElement))
       ) {
         return
       }
@@ -196,7 +200,10 @@ const Select = ({
 
   return (
     <div className="relative w-full">
-      <div ref={border.fieldRef} className="relative w-full isolate">
+      <div
+        ref={border.fieldRef}
+        className="relative w-full isolate"
+      >
         {hasLabel && (
           <label
             ref={border.labelRef}
@@ -220,7 +227,9 @@ const Select = ({
           aria-expanded={isOpen}
           aria-controls={listboxId}
           aria-autocomplete={isSearchable ? 'list' : 'none'}
-          aria-activedescendant={isOpen && filteredOptions[activeIndex] ? `${selectId}-option-${activeIndex}` : undefined}
+          aria-activedescendant={
+            isOpen && filteredOptions[activeIndex] ? `${selectId}-option-${activeIndex}` : undefined
+          }
           aria-invalid={!!alert}
           aria-required={required || undefined}
           aria-describedby={alert ? alertId : undefined}
@@ -245,11 +254,21 @@ const Select = ({
           onKeyDown={handleKeyDown}
         />
 
-        {name && <input type="hidden" name={name} value={selectValue} />}
+        {name && (
+          <input
+            type="hidden"
+            name={name}
+            value={selectValue}
+          />
+        )}
 
         <button
           type="button"
-          aria-label={isOpen ? `Close ${label || name || 'select'} options` : `Open ${label || name || 'select'} options`}
+          aria-label={
+            isOpen
+              ? `Close ${label || name || 'select'} options`
+              : `Open ${label || name || 'select'} options`
+          }
           aria-controls={listboxId}
           aria-expanded={isOpen}
           className="absolute right-3 top-1/2 z-20 -translate-y-1/2 inline-flex size-8 items-center justify-center text-current"
@@ -290,7 +309,11 @@ const Select = ({
         >
           <defs>
             <mask id={maskId}>
-              <rect width="100%" height="100%" fill="white" />
+              <rect
+                width="100%"
+                height="100%"
+                fill="white"
+              />
 
               {hasLabel && (
                 <rect
@@ -338,15 +361,15 @@ const Select = ({
             height={Math.max(border.height - 2, 0)}
             rx={border.radius}
             ry={border.radius}
-            fill="transparent"
+            fill="none"
             stroke="currentColor"
-            strokeDasharray={border.pathLength}
-            strokeDashoffset={shouldShowActiveBorder ? 0 : border.pathLength}
+            pathLength={1}
+            strokeDasharray="1"
+            strokeDashoffset={shouldShowActiveBorder ? 0 : 1}
             className={clsx(
-              'stroke-2 transition-[stroke-dashoffset,stroke]',
-              border.width > 350 ? 'duration-600' : 'duration-300',
-              alert && 'text-red-500',
-              !alert && 'text-primary',
+              'stroke-2 transition-[stroke-dashoffset,stroke] ease-in-out',
+              border.width > 480 ? 'duration-700' : 'duration-600',
+              alert ? 'text-red-500' : 'text-primary',
             )}
             mask={`url(#${maskId})`}
             vectorEffect="non-scaling-stroke"
@@ -388,9 +411,7 @@ const Select = ({
               )
             })
           ) : (
-            <div className="px-3 py-2 text-sm text-muted-foreground">
-              No options found.
-            </div>
+            <div className="px-3 py-2 text-sm text-muted-foreground">No options found.</div>
           )}
         </div>
       )}

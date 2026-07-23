@@ -84,7 +84,10 @@ const Textarea = ({
   }
 
   return (
-    <div ref={border.fieldRef} className="relative w-full isolate">
+    <div
+      ref={border.fieldRef}
+      className="relative w-full isolate"
+    >
       {hasLabel && (
         <label
           ref={border.labelRef}
@@ -148,7 +151,11 @@ const Textarea = ({
       >
         <defs>
           <mask id={maskId}>
-            <rect width="100%" height="100%" fill="white" />
+            <rect
+              width="100%"
+              height="100%"
+              fill="white"
+            />
 
             {hasLabel && (
               <rect
@@ -182,10 +189,7 @@ const Textarea = ({
           fill="transparent"
           stroke="currentColor"
           strokeWidth={1.55}
-          className={clsx(
-            'text-border',
-            alert && 'text-red-500'
-          )}
+          className={clsx('text-border', alert && 'text-red-500')}
           mask={`url(#${maskId})`}
           shapeRendering="geometricPrecision"
           vectorEffect="non-scaling-stroke"
@@ -199,15 +203,15 @@ const Textarea = ({
           height={Math.max(border.height - 2, 0)}
           rx={border.radius}
           ry={border.radius}
-          fill="transparent"
+          fill="none"
           stroke="currentColor"
-          strokeDasharray={border.pathLength}
-          strokeDashoffset={shouldShowActiveBorder ? 0 : border.pathLength}
+          pathLength={1}
+          strokeDasharray="1"
+          strokeDashoffset={shouldShowActiveBorder ? 0 : 1}
           className={clsx(
-            'stroke-2 transition-[stroke-dashoffset,stroke]',
-            border.width > 350 ? 'duration-600' : 'duration-300',
-            alert && 'text-red-500',
-            !alert && 'text-primary',
+            'stroke-2 transition-[stroke-dashoffset,stroke] ease-in-out',
+            border.width > 350 ? 'duration-1000' : 'duration-600',
+            alert ? 'text-red-500' : 'text-primary',
           )}
           mask={`url(#${maskId})`}
           vectorEffect="non-scaling-stroke"

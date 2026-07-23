@@ -120,10 +120,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2246,6 +2248,137 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  siteTitle?: string | null;
+  /**
+   * A concise site description. Maximum 160 characters.
+   */
+  siteDescription?: string | null;
+  /**
+   * Use a comma-delimited list, for example: keyword, keyword two, keyword three.
+   */
+  siteKeywords?: string | null;
+  twitterHandle?: string | null;
+  /**
+   * Used to style supported browser interface elements.
+   */
+  siteThemeColor?: string | null;
+  /**
+   * Background color used when the website is pinned on Microsoft devices.
+   */
+  siteMicrosoftTileColor?: string | null;
+  /**
+   * Store this asset in Site Settings / Logos in the Media library.
+   */
+  siteLogo?: (number | null) | Media;
+  /**
+   * Store this asset in Site Settings / Logos in the Media library.
+   */
+  siteLogoSmall?: (number | null) | Media;
+  /**
+   * For dark themes. Store this asset in Site Settings / Logos in the Media library.
+   */
+  siteLogoDark?: (number | null) | Media;
+  /**
+   * For dark themes. Store this asset in Site Settings / Logos in the Media library.
+   */
+  siteLogoDarkSmall?: (number | null) | Media;
+  /**
+   * An optional seasonal or campaign logo. Store this asset in Site Settings / Logos in the Media library.
+   */
+  siteLogoAlternative?: (number | null) | Media;
+  /**
+   * Expected size: 1200 × 1200 px. Store this asset in Site Settings / Thumbnails in the Media library.
+   */
+  siteThumbnailGoogle?: (number | null) | Media;
+  /**
+   * Expected size: 1200 × 630 px. Store this asset in Site Settings / Thumbnails in the Media library.
+   */
+  siteThumbnailOpenGraph?: (number | null) | Media;
+  /**
+   * Expected size: 1200 × 630 px. Store this asset in Site Settings / Thumbnails in the Media library.
+   */
+  siteThumbnailTwitterLarge?: (number | null) | Media;
+  /**
+   * Expected size: 120 × 120 px. Store this asset in Site Settings / Thumbnails in the Media library.
+   */
+  siteThumbnailTwitterSmall?: (number | null) | Media;
+  /**
+   * Expected size: 1200 × 627 px. Store this asset in Site Settings / Thumbnails in the Media library.
+   */
+  siteThumbnailLinkedIn?: (number | null) | Media;
+  /**
+   * Required. Upload an .ico file. Expected size: 16 × 16 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  favicon: number | Media;
+  /**
+   * Expected size: 32 × 32 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  favicon32?: (number | null) | Media;
+  /**
+   * Expected size: 96 × 96 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  favicon96?: (number | null) | Media;
+  /**
+   * Expected size: 57 × 57 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple57?: (number | null) | Media;
+  /**
+   * Expected size: 60 × 60 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple60?: (number | null) | Media;
+  /**
+   * Expected size: 72 × 72 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple72?: (number | null) | Media;
+  /**
+   * Expected size: 76 × 76 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple76?: (number | null) | Media;
+  /**
+   * Expected size: 114 × 114 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple114?: (number | null) | Media;
+  /**
+   * Expected size: 120 × 120 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple120?: (number | null) | Media;
+  /**
+   * Expected size: 144 × 144 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple144?: (number | null) | Media;
+  /**
+   * Expected size: 152 × 152 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple152?: (number | null) | Media;
+  /**
+   * Expected size: 180 × 180 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconApple180?: (number | null) | Media;
+  /**
+   * Expected size: 192 × 192 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  faviconAndroid?: (number | null) | Media;
+  /**
+   * Used when the website is pinned to the Start menu or Start screen on Microsoft devices. Expected size: 144 × 144 px. Store this asset in Site Settings / Favicons in the Media library.
+   */
+  siteMicrosoftTileImage?: (number | null) | Media;
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'pinterest';
+        handle?: string | null;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2314,6 +2447,53 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteTitle?: T;
+  siteDescription?: T;
+  siteKeywords?: T;
+  twitterHandle?: T;
+  siteThemeColor?: T;
+  siteMicrosoftTileColor?: T;
+  siteLogo?: T;
+  siteLogoSmall?: T;
+  siteLogoDark?: T;
+  siteLogoDarkSmall?: T;
+  siteLogoAlternative?: T;
+  siteThumbnailGoogle?: T;
+  siteThumbnailOpenGraph?: T;
+  siteThumbnailTwitterLarge?: T;
+  siteThumbnailTwitterSmall?: T;
+  siteThumbnailLinkedIn?: T;
+  favicon?: T;
+  favicon32?: T;
+  favicon96?: T;
+  faviconApple57?: T;
+  faviconApple60?: T;
+  faviconApple72?: T;
+  faviconApple76?: T;
+  faviconApple114?: T;
+  faviconApple120?: T;
+  faviconApple144?: T;
+  faviconApple152?: T;
+  faviconApple180?: T;
+  faviconAndroid?: T;
+  siteMicrosoftTileImage?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        handle?: T;
+        url?: T;
         id?: T;
       };
   updatedAt?: T;

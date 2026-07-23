@@ -1,11 +1,18 @@
 'use client'
 
-import { useEffect, useId, useRef, useState, type ComponentPropsWithoutRef, type KeyboardEvent } from 'react'
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ComponentPropsWithoutRef,
+  type KeyboardEvent,
+} from 'react'
 import clsx from 'clsx'
 import { Theme as t } from '../../theme'
 import Button from '@/ui/buttons/simple'
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add'
+import RemoveIcon from '@mui/icons-material/Remove'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
@@ -13,7 +20,10 @@ import { useFieldBorder } from '../../hooks/use-field-border'
 import { useFieldInteraction } from '../../hooks/use-field-interaction'
 import { useNumberField } from '../../hooks/use-number-field'
 import { normalizeFieldValue } from '../../utilities/normalization'
-import { formatNorthAmericanPhoneDisplay, formatNorthAmericanPhoneE164 } from '../../utilities/telephone'
+import {
+  formatNorthAmericanPhoneDisplay,
+  formatNorthAmericanPhoneE164,
+} from '../../utilities/telephone'
 import { normalizeDecimalInput, normalizeIntegerInput } from '../../utilities/numbers'
 import { getTextInputValidationMessage } from '../../utilities/validation'
 import type { FieldStepDirection } from '../../types/field'
@@ -36,7 +46,8 @@ const getInitialInputValue = ({
 }: Pick<TextInputProps, 'decimalPlaces' | 'inputMode' | 'max' | 'min' | 'value'>) => {
   if (inputMode === 'tel') return formatNorthAmericanPhoneDisplay(value ?? '')
   if (inputMode === 'numeric') return normalizeIntegerInput(value ?? '', min, max)
-  if (inputMode === 'decimal') return normalizeDecimalInput(value ?? '', { min, max, decimalPlaces })
+  if (inputMode === 'decimal')
+    return normalizeDecimalInput(value ?? '', { min, max, decimalPlaces })
 
   return value ?? ''
 }
@@ -184,16 +195,15 @@ const TextInput = ({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex gap-2">
-        <div ref={border.fieldRef} className="relative w-full isolate">
+        <div
+          ref={border.fieldRef}
+          className="relative w-full isolate"
+        >
           {hasLabel && (
             <label
               ref={border.labelRef}
               htmlFor={inputId}
-              className={clsx(
-                t.label.base,
-                t.label.sizes[size],
-                t.variants[variant].label
-              )}
+              className={clsx(t.label.base, t.label.sizes[size], t.variants[variant].label)}
             >
               {label}
             </label>
@@ -235,7 +245,13 @@ const TextInput = ({
             onKeyDown={handleKeyDown}
           />
 
-          {isTel && name && <input type="hidden" name={name} value={formValue} />}
+          {isTel && name && (
+            <input
+              type="hidden"
+              name={name}
+              value={formValue}
+            />
+          )}
 
           {alert && (
             <div
@@ -258,7 +274,11 @@ const TextInput = ({
           >
             <defs>
               <mask id={maskId}>
-                <rect width="100%" height="100%" fill="white" />
+                <rect
+                  width="100%"
+                  height="100%"
+                  fill="white"
+                />
 
                 {hasLabel && (
                   <rect
@@ -292,10 +312,7 @@ const TextInput = ({
               fill="transparent"
               stroke="currentColor"
               strokeWidth={1.55}
-              className={clsx(
-                'text-border',
-                alert && 'text-red-500'
-              )}
+              className={clsx('text-border', alert && 'text-red-500')}
               mask={`url(#${maskId})`}
               shapeRendering="geometricPrecision"
               vectorEffect="non-scaling-stroke"
@@ -309,15 +326,15 @@ const TextInput = ({
               height={Math.max(border.height - 2, 0)}
               rx={border.radius}
               ry={border.radius}
-              fill="transparent"
+              fill="none"
               stroke="currentColor"
-              strokeDasharray={border.pathLength}
-              strokeDashoffset={shouldShowActiveBorder ? 0 : border.pathLength}
+              pathLength={1}
+              strokeDasharray="1"
+              strokeDashoffset={shouldShowActiveBorder ? 0 : 1}
               className={clsx(
                 'stroke-2 transition-[stroke-dashoffset,stroke] ease-in-out',
-                border.width > 350 ? 'duration-600' : 'duration-300',
-                alert && 'text-red-500',
-                !alert && 'text-primary',
+                border.width > 350 ? 'duration-1000' : 'duration-600',
+                alert ? 'text-red-500' : 'text-primary',
               )}
               mask={`url(#${maskId})`}
               vectorEffect="non-scaling-stroke"
@@ -327,9 +344,13 @@ const TextInput = ({
         {isPassword && (
           <div className="flex gap-2 items-center">
             <Button
-              size='large'
+              size="large"
               aria-controls={inputId}
-              aria-label={isPasswordVisible ? `Hide ${label || name || 'password'}` : `Show ${label || name || 'password'}`}
+              aria-label={
+                isPasswordVisible
+                  ? `Hide ${label || name || 'password'}`
+                  : `Show ${label || name || 'password'}`
+              }
               aria-pressed={isPasswordVisible}
               startIcon={isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
               onClick={togglePasswordVisibility}
@@ -339,7 +360,7 @@ const TextInput = ({
         {isNumberMode && (
           <div className="flex gap-2 items-center">
             <Button
-              size='large'
+              size="large"
               aria-controls={inputId}
               aria-label={`Decrease ${label || name || 'value'}`}
               startIcon={<RemoveIcon />}
@@ -347,7 +368,7 @@ const TextInput = ({
               disabled={!numberField.canDecrement}
             />
             <Button
-              size='large'
+              size="large"
               aria-controls={inputId}
               aria-label={`Increase ${label || name || 'value'}`}
               startIcon={<AddIcon />}
